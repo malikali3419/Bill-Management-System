@@ -1,0 +1,157 @@
+{% extends "Manager/base_site_manager.html" %} {% block title %} Manager | Reading{% endblock %}
+<!-- asdasd -->
+{%block content %}
+<div>
+  {% if not messages %}
+  <form class="my-form" id="my-form" enctype="multipart/form-data" method="POST">
+    {%csrf_token %}
+    <div class="container details">
+      <h1>Add Unit Prices</h1>
+      <ul>
+
+        <li>
+          <div>
+            <label for="house_no" class="text-light">House/Shop/Office No</label>
+            <input type="text" name="house_no" value="{{house}}" disabled />
+          </div>
+        </li>
+        <li>
+          <div>
+            <label for="house_no" class="text-light">Meter No</label>
+            <input type="text" name="meter_number" disabled value="{{meter.meter_id}}"
+              placeholder="Residential Unit Prices" />
+          </div>
+        </li>
+        {% if bills %}
+        <li class="mt-5">
+          <h3>Bills Invoices</h3>
+        </li>
+        {%for i in bills%}
+        <li class="mt-4">
+          <div>
+            <label for="house_no" class="text-light">Bill Reading</label>
+
+            <input type="number" name="meter_reading" value="{{i.bill_reading}}" disabled />
+          </div>
+        </li>
+        <li>
+          <div>
+
+            <label for="bill_amount" class="text-light">Bill Amount</label>
+            <input type="number" name="bill_amount" value="{{i.bill_total_amount}}" disabled />
+          </div>
+
+        </li>
+        {%endfor%}
+        <li>
+          <div>
+            <h4 style="color: red;">{{message}}</h4>
+            <label for="house_no" class="text-light">Total Amount</label>
+
+            <input type="number" name="total_amount_visible" value="{{total_amount}}" disabled />
+            <input type="hidden" id="total_amount" name="total_amount" value="{{total_amount}}" />
+          </div>
+        </li>
+        <li>
+          <div>
+            <label for="r_amount" class="text-light">Recieved Amount</label>
+            <input type="number" id="r_amount" name="r_amount" placeholder="Recieved Amount" required />
+          </div>
+        </li>
+
+        <li>
+          <input type="checkbox" id="terms" />
+          <label for="terms" style="color: red;">Confirm
+        </li>
+        <li>
+          <div class="grid grid-3">
+            <div class="required-msg">REQUIRED FIELDS</div>
+            <button class="btn-grid" type="submit"
+              onclick="document.getElementById('my-form').submit();  document.getElementById('my-form').style.display='none';return false;"
+              disabled>
+              <span class="back">
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/email-icon.svg" alt="" />
+              </span>
+              <span class="front">SUBMIT</span>
+            </button>
+            <button class="btn-grid" type="button" onclick="printContent()"
+              onclick="document.getElementById('my-form').submit();  document.getElementById('my-form').style.display='none';return false;"
+              disabled>
+              <span class="back">
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/email-icon.svg" alt="" />
+              </span>
+              <span class="front">PRINT</span>
+            </button>
+
+          </div>
+        </li>
+        {%else%}
+        <h3 class="text-light">No Bills Pending</h3>
+        {%endif%}
+      </ul>
+    </div>
+  </form>
+  {%endif%}
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <div class="box">
+      {% if message.tags == 'success' %}
+      <div class="success alert">
+        <div class="alert-body">
+          {{ message }}
+        </div>
+      </div>
+      {% else %}
+      <div class="error alert">
+        <div class="alert-body">
+          {{ message }}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+</div>
+<script>
+  function printContent() {
+    window.print();
+  }
+  var count = 0
+  function showMore(event) {
+    if (count === 0) {
+      meter_li = document.getElementsByClassName('meter-li1')
+      console.log(count);
+      for (const i of meter_li) {
+        i.style.display = 'block'
+      }
+      count += 1
+    }
+    else if (count === 1) {
+      meter_li = document.getElementsByClassName('meter-li2')
+      console.log(count);
+      for (const i of meter_li) {
+        i.style.display = 'block'
+      }
+      count += 1
+
+    }
+
+  }
+  const checkbox = document.querySelector('.my-form input[type="checkbox"]');
+  const btns = document.querySelectorAll(".my-form button");
+
+  checkbox.addEventListener("change", function () {
+    total_amount = document.getElementById('total_amount').value
+    r_amount = document.getElementById('r_amount').value
+    if (parseFloat(total_amount) === parseFloat(r_amount)) {
+      const checked = this.checked;
+      for (const btn of btns) {
+        checked ? (btn.disabled = false) : (btn.disabled = true);
+      }
+    }
+  });
+</script>
+{%endblock%}

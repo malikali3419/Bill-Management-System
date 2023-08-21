@@ -1,0 +1,230 @@
+{% extends "base_site.html" %} {% block title %} Area Details{% endblock %}
+{%block content %} {% load static %}
+<div>
+  {% if area%}
+  <div class="my-form" id="my-form" method="POST" class="my-5">
+    {%csrf_token %}
+    <div class="container my-5">
+      <h1>Area Information</h1>
+      <ul>
+        <li class="grid grid-2 details">
+          <div class="details">
+            <label for="area_no" class="text-light">Area No</label>
+
+            <input
+              type="text"
+              name="area_no"
+              value="{{area.house_number}}"
+              placeholder="Area no"
+              disabled
+            />
+          </div>
+          <div>
+            <label for="area_type" class="text-light">Area Type</label>
+
+            <input
+              type="text"
+              name="CNIC"
+              value="{{area.area_type|upper}}"
+              placeholder="Area type"
+              disabled
+            />
+          </div>
+        </li>
+        <li>
+          <div class="grid grid-2">
+            <div class="details">
+              <label for="owner_name" class="text-light">Owners Name</label>
+
+              <input
+                type="text"
+                name="owner_name"
+                value="{{area.owners_name}}"
+                placeholder="Owner Name"
+                disabled
+              />
+            </div>
+            <div class="details">
+              <label for="CNIC" class="text-light">CNIC</label>
+
+              <input
+                type="text"
+                name="CNIC"
+                value="{{area.CNIC}}"
+                placeholder="Owner Name"
+                disabled
+              />
+            </div>
+          </div>
+        </li>
+         <div class="grid grid-2 details">
+        <li >
+             <label for="phone_number" class="text-light">Owners Phone Number</label>
+            <input
+                type="text"
+                name="phone_number"
+                value="{{area.owners_phone_number}}"
+                placeholder="Owner Phone Number"
+                disabled
+              />
+
+        </li>
+        </div>
+          <div class="grid grid-2">
+            <div class="details">
+              <label for="owner_name" class="text-light">Area Block</label>
+
+              <input
+                type="text"
+                name="owner_name"
+                value="{{area.area_block}}"
+                placeholder="Owner Name"
+                disabled
+              />
+            </div>
+            <div class="details">
+              <label for="bill_paid_status" class="text-light"
+                >BIll Status</label
+              >
+              {% if area.bill_paid_status == 'unpaid'%}
+
+              <input
+                type="text"
+                style="color: red"
+                name="bill_paid_status"
+                value="{{area.bill_paid_status|upper}}"
+                placeholder="Owner Name"
+                disabled
+              />
+              {%else%}
+              <input
+                type="text"
+                style="color: green"
+                name="bill_paid_status"
+                value="{{area.bill_paid_status|upper}}"
+                placeholder="Owner Name"
+                disabled
+              />
+              {%endif%}
+            </div>
+          </div>
+        </li>
+        <li class="fw-bold" style="color: red">Bill details</li>
+        {% for i in bills%}
+
+        <li class="meter-li">
+          <div class="grid grid-2 meter">
+            <div class="details">
+              <label for="bill_no" class="text-light">Bill No</label>
+
+              <input
+                type="text"
+                name="bill_no"
+                value="{{i.bill_id}}"
+                placeholder="Owner Name"
+                disabled
+              />
+            </div>
+            <div class="details">
+              <label for="CNIC" class="text-light">Bill Owner</label>
+
+              <input
+                type="text"
+                name="CNIC"
+                value="{{i.meter.meter_owner}}"
+                placeholder="Owner Name"
+                disabled
+              />
+            </div>
+          </div>
+        </li>
+
+        <li class="meter-li">
+          <div class="grid grid-2 meter">
+            <div class="details">
+              <label for="bill_amount" class="text-light">Bill Amount</label>
+
+              <input
+                type="text"
+                name="bill_amount"
+                value="{{i.bill_total_amount}}"
+                placeholder="Owner Name"
+                disabled
+              />
+            </div>
+            <div class="details">
+              <label for="bill_date" class="text-light">Bill Date</label>
+
+              <input
+                type="text"
+                name="bill_date"
+                value="{{i.created_at}}"
+                placeholder="Owner Name"
+                disabled
+              />
+            </div>
+          </div>
+        </li>
+        <li class="meter-li">
+          <div>
+            <div class="details">
+              <img src="/media/{{ i.bill_reading_img }}" alt="" width="70%" />
+            </div>
+            <div class="details">
+              <label for="bill_type" class="text-light">Bill Type</label>
+
+              <input
+                type="text"
+                name="bill_type"
+                value="{{i.meter.meter_type|upper}}"
+                placeholder="Owner Name"
+                disabled
+              />
+            </div>
+          </div>
+        </li>
+        <li class="meter-li">
+          <div class="grid grid-2 meter">
+            <div class="details">
+              <label for="bill_no" class="text-light">Bill Status</label>
+              {%if i.bill_status == 'Unpaid'%}
+
+              <input
+                type="text"
+                name="bill_no"
+                value="{{i.bill_status|upper}}"
+                placeholder="Owner Name"
+                disabled
+                style="color: red"
+              />
+              {%else%}
+              <input
+                type="text"
+                name="bill_no"
+                value="{{i.bill_status|upper}}"
+                placeholder="Owner Name"
+                disabled
+                style="color: green"
+              />
+              {%endif%}
+              <label for="bill_no" class="text-light"
+                >Inital Bill Reading</label
+              >
+              <input
+                type="text"
+                name="bill_no"
+                value="{{i.bill_reading}}"
+                placeholder="Owner Name"
+                disabled
+              />
+            </div>
+          </div>
+        </li>
+
+        {%endfor%}
+      </ul>
+    </div>
+  </div>
+  {%endif%}
+</div>
+{%endblock%}

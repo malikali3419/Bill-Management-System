@@ -1,0 +1,73 @@
+{% extends "Manager/base_site_manager.html" %} {% block title %} Manager | Home
+{%endblock%} {%block content %} {% load static %}
+<div
+  class="row p-5 text-center mt-5 d-flex justify-content-center align-items-center"
+>
+  {% if not blocks %}
+  <h1>No Blocks Added</h1>
+  {%else%}
+  <!--  -->
+  {%for i in blocks %}
+  <div
+    class="col-lg-3 col-md-6 col-sm-6 col-xs-6 blocks d-flex justify-content-center align-items-center mt-5"
+    style="width: fit-content"
+  >
+    <a href="{% url 'blocks_areas' block_name=i.block_name %}" class="d-inline">
+      <button class="btn">
+        <span class="btn-text-one">{{i.block_name}}</span>
+        <span class="btn-text-two">Block</span>
+      </button>
+    </a>
+  </div>
+
+  <!-- end -->
+  {%endfor%} {%endif%}
+
+  <div class="col-lg-12 my-form" id="my-form" style="display: none">
+    <form class="container" method="POST">
+      {%csrf_token%}
+      <ul>
+        <li>
+          <div
+            class="grid grid-2 justify-content-center align-items-center d-flex"
+          >
+            <input
+              type="text"
+              name="block_name"
+              placeholder="Block name"
+              required
+            />
+          </div>
+        </li>
+        <button
+          class="btn-grid"
+          type="submit"
+          onclick="document.getElementById('my-form').submit();  document.getElementById('my-form').style.display='none';return false;"
+        >
+          <span class="back">
+            <img
+              src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/email-icon.svg"
+              alt=""
+            />
+          </span>
+          <span class="front">SUBMIT</span>
+        </button>
+      </ul>
+    </form>
+  </div>
+</div>
+<script>
+  function ShowForm(event) {
+    document.getElementById("my-form").style.display = "block";
+  }
+  var addMode = false;
+
+  $(".circle").click(function () {
+    addMode = ~addMode;
+    $("#addSign").css({
+      transform: addMode ? "rotate(315deg)" : "rotate(0deg)",
+    });
+  });
+</script>
+
+{%endblock%}

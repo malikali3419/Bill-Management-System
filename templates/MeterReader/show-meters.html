@@ -1,0 +1,25 @@
+{% extends "MeterReader/base_site_reader.html" %} {% block title %} Admin | Home
+{% endblock %} {%block content %} {% load static %}
+<div class="row cards-row">
+  {%for i in meters%}
+
+  <div class="card col-lg-3 col-sm-12 col-md-6 mx-4 my-4">
+    <a href="{% url 'meters_details' meter_id=i.id %}">
+      <div class="top-section d-flex justify-content-center align-items-center">
+        <img src="{% static '/css/meter.gif' %}" alt="" width="140px" />
+      </div>
+    </a>
+    <div class="bottom-section">
+      <span class="title">{{i.meter_id}}</span>
+      <div class="row row1">
+        <div class="item">
+          <span class="big-text">Meter type</span>
+          <span class="regular-text">{{i.meter_type|upper }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%endfor%}
+</div>
+{% endblock %}

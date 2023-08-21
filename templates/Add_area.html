@@ -1,0 +1,203 @@
+{% extends "base_site.html" %} {% block title %} Add Area{% endblock %}
+<!-- asdasd -->
+{%block content %}
+<div>
+     {% if not messages %}
+  <form class="my-form" id="my-form" enctype="multipart/form-data" method="POST">
+    {%csrf_token %}
+    <div class="container">
+      <h1>Add House/Shop/Office</h1>
+      <ul>
+        <li>
+          <select name="area_type">
+            <option selected disabled>-- Please choose Area Type --</option>
+            <option value="residential">Residential</option>
+            <option value="commercial">Commercial</option>
+          </select>
+        </li>
+        <li>
+          <div class="grid grid-2">
+            <input type="text" name="area_no" placeholder="Area no" required />
+            <input type="text" name="owner_name" placeholder="Owner Name" required />
+          
+          </div>
+        </li>
+        <li>
+          <div class="grid grid-2">
+            <input type="text" name="cnic" placeholder="CNIC" required />
+            <select name="area_block">
+              <option selected disabled>-- Please choose Area Block --</option>
+              {%for i in blocks %}
+              <option value="{{i.block_name}}">{{i.block_name}}</option>
+              {%endfor%}
+            </select>
+          </div>
+        </li>
+        <li class="grid grid-2">
+            <input type="text" name="phone_number" placeholder="Owner Phone Number" required />
+        </li>
+        <li class="text-light meter-li1">
+            Bill details
+        </li>
+        
+         <li class="meter-li1">
+          <div class="grid grid-2 meter">
+            <input type="text" name="bill_no" placeholder="Bill Id"  />
+            <input type="text" name="bill_owner" placeholder="Bill Owner"  />
+            
+          </div>
+        </li>
+        <li class="meter-li1">
+          <div class="grid grid-2 meter">
+            
+            <select name="bill_type">
+              <option selected disabled>-- Please choose Bill Type --</option>
+              <option value="electricity">Electricity</option>
+              <option value="gas">Gas</option>
+               <option value="water">Water</option>
+            </select>
+             <input type="file" name="bill_img" placeholder="Bill Image"  />
+            
+          </div>
+        </li>
+        <li class="meter-li1">
+          <div class="grid grid-2 meter">
+            
+           <select name="bill_status">
+              <option selected disabled>-- Please choose Bill Type --</option>
+              <option value="Unpaid">Unpaid</option>
+              <option value="Paid">Paid</option>
+               
+            </select>
+             <input type="text" name="bill_reading" placeholder="Bill Initial Reading"  />
+            
+          </div>
+        </li>
+         <li class="text-light meter-li2">
+            Bill details 2
+        </li>
+         <li class="meter-li2">
+          <div class="grid grid-2 meter">
+            <input type="text" name="bill_id2" placeholder="Bill Id"  />
+            <input type="text" name="bill_owner2" placeholder="Bill Owner"  />
+          </div>
+        </li>
+        <li class="meter-li2">
+          <div class="grid grid-2 meter"> 
+            <select name="bill_type2">
+              <option selected disabled>-- Please choose Bill Type --</option>
+              <option value="electricity">Electricity</option>
+              <optio value="gas">Gas</option>
+               <option value="water">Water</option>
+            </select>
+            <input type="file" name="bill_img2" placeholder="Bill Image"  />
+            
+          </div>
+        </li>
+        <li class="meter-li2">
+          <div class="grid grid-2 meter"> 
+            <select name="bill_status2">
+               <option value="Unpaid">Unpaid</option>
+              <option value="Paid">Paid</option>
+            </select>
+             <input type="text" name="bill_reading2" placeholder="Bill Initial Reading"  />
+           
+            
+          </div>
+        </li>
+        <li class="btn-li">
+            <button class="c-button" type="button" onclick="showMore(event)">
+            <span class="c-main">
+                <span class="c-ico"><span class="c-blur"></span> <span class="ico-text">+</span></span>
+                Add Meter
+            </span>
+            </button>
+        </li>
+        <li>
+          <input type="checkbox" id="terms" />
+          <label for="terms" style="color: red;"
+            >Confirm
+        </li>
+        <li>
+          <div class="grid grid-3">
+            <div class="required-msg">REQUIRED FIELDS</div>
+            <button class="btn-grid" type="submit" onclick="document.getElementById('my-form').submit();  document.getElementById('my-form').style.display='none';return false;" disabled>
+              <span class="back">
+                <img
+                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/email-icon.svg"
+                  alt=""
+                />
+              </span>
+              <span class="front">SUBMIT</span>
+            </button>
+            <button class="btn-grid" type="reset" disabled>
+              <span class="back">
+                <img
+                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/eraser-icon.svg"
+                  alt=""
+                />
+              </span>
+              <span class="front">RESET</span>
+            </button>
+          </div>
+        </li> 
+      </ul>
+    </div>
+  </form>
+  {%endif%}
+   {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+<div class="box"> 
+    {% if message.tags == 'success' %}
+        <div class="success alert">
+            <div class="alert-body">
+            {{ message }}
+            </div>
+        </div>
+    {% else %}
+        <div class="error alert">
+            <div class="alert-body">
+                {{ message }}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endfor %}
+</ul>
+{% endif %}
+
+</div>
+<script>
+    var count = 0
+    function showMore(event){
+        if (count === 0){
+            meter_li = document.getElementsByClassName('meter-li1')
+        console.log(count);
+        for( const i of meter_li){
+            i.style.display = 'block'
+        }
+        count +=1
+        }
+        else if(count === 1){
+             meter_li = document.getElementsByClassName('meter-li2')
+            console.log(count);
+            for( const i of meter_li){
+                i.style.display = 'block'
+            }
+            count +=1
+
+        }
+        
+    }
+  const checkbox = document.querySelector('.my-form input[type="checkbox"]');
+  const btns = document.querySelectorAll(".my-form button");
+
+  checkbox.addEventListener("change", function () {
+    const checked = this.checked;
+    for (const btn of btns) {
+      checked ? (btn.disabled = false) : (btn.disabled = true);
+    }
+  });
+</script>
+{%endblock%}

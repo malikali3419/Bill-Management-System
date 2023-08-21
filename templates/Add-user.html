@@ -1,0 +1,122 @@
+{% extends "base_site.html" %} {% block title %} Add Area{% endblock %}
+<!-- asdasd -->
+{%block content %}
+<div>
+     {% if not messages %}
+  <form class="my-form" id="my-form" enctype="multipart/form-data" method="POST">
+    {%csrf_token %}
+    <div class="container">
+      <h1>Add Users</h1>
+      <ul>
+        <li>
+          <select name="user_role">
+            <option selected disabled>-- Please choose User Role --</option>
+            <option value="Admin">Admin</option>
+            <option value="Manager">Manager</option>
+            <option value="Meter Reader">Meter Reader</option>
+          </select>
+        </li>
+        <li>
+          <div class="grid grid-2">
+            <input type="text" name="username" placeholder="Username" required />
+            <input type="email" name="email" placeholder="Email ( Must be unique )" required />
+          </div>
+        </li>
+        <li>
+          <div class="grid grid-2">
+            <input type="password" name="password" placeholder="Password" required />
+            <input type="password" name="password2" placeholder="Confirm Password" required />
+            
+          </div>
+        </li>
+        <li class="text-light meter-li1">
+            Bill details
+        </li>
+        <li>
+          <input type="checkbox" id="terms" />
+          <label for="terms" style="color: red;"
+            >Confirm
+        </li>
+        <li>
+          <div class="grid grid-3">
+            <div class="required-msg">REQUIRED FIELDS</div>
+            <button class="btn-grid" type="submit" onclick="document.getElementById('my-form').submit();  document.getElementById('my-form').style.display='none';return false;" disabled>
+              <span class="back">
+                <img
+                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/email-icon.svg"
+                  alt=""
+                />
+              </span>
+              <span class="front">SUBMIT</span>
+            </button>
+            <button class="btn-grid" type="reset" disabled>
+              <span class="back">
+                <img
+                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/eraser-icon.svg"
+                  alt=""
+                />
+              </span>
+              <span class="front">RESET</span>
+            </button>
+          </div>
+        </li> 
+      </ul>
+    </div>
+  </form>
+  {%endif%}
+   {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+<div class="box"> 
+    {% if message.tags == 'success' %}
+        <div class="success alert">
+            <div class="alert-body">
+            {{ message }}
+            </div>
+        </div>
+    {% else %}
+        <div class="error alert">
+            <div class="alert-body">
+                {{ message }}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endfor %}
+</ul>
+{% endif %}
+
+</div>
+<script>
+    var count = 0
+    function showMore(event){
+        if (count === 0){
+            meter_li = document.getElementsByClassName('meter-li1')
+        console.log(count);
+        for( const i of meter_li){
+            i.style.display = 'block'
+        }
+        count +=1
+        }
+        else if(count === 1){
+             meter_li = document.getElementsByClassName('meter-li2')
+            console.log(count);
+            for( const i of meter_li){
+                i.style.display = 'block'
+            }
+            count +=1
+
+        }
+        
+    }
+  const checkbox = document.querySelector('.my-form input[type="checkbox"]');
+  const btns = document.querySelectorAll(".my-form button");
+
+  checkbox.addEventListener("change", function () {
+    const checked = this.checked;
+    for (const btn of btns) {
+      checked ? (btn.disabled = false) : (btn.disabled = true);
+    }
+  });
+</script>
+{%endblock%}
