@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     "Bills",
     'Area',
     'UnitsRate',
-    'Billreadings'
 ]
 
 MIDDLEWARE = [

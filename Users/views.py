@@ -46,7 +46,7 @@ class AddUser(View):
             if password == password2:
                 try:
                     User.objects.create_user(email=email, username=username, password=password, role=user_role)
-                    messages.success(request, 'Succes')
+                    messages.success(request, 'Success')
                 except Exception as e:
                     print(e)
                     messages.error(request, 'Error')

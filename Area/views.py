@@ -5,14 +5,14 @@ from django.views.generic.detail import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
 from django.http import HttpResponse
-from Area.models import Areas, Block
-from Bills.models import Meter, CalculatedBills
+from Area.models import Area, Block
+from Bills.models import Meter, CalculatedBill
 from django.contrib import messages
 
 class Home(View):
     def get(self,request,*args, **kwargs):
         context = {}
-        areas = Areas.objects.all()
+        areas = Area.objects.all()
         bill = Meter.objects.all()
         context['areas'] = areas
         blocks = Block.objects.all()
@@ -72,7 +72,7 @@ class AddHouse(View):
             bill_initial_reading2 = request.POST.get('bill_reading2', None)
             print(meter_id)
             try:
-                area = Areas(
+                area = Area(
                 owners_name=area_owner_name,
                 CNIC=owner_cnic,
                 house_number=area_no,
@@ -89,7 +89,7 @@ class AddHouse(View):
                         meter_type = meter_type,
                     )
                     meter.save()
-                    initial_reading = CalculatedBills(
+                    initial_reading = CalculatedBill(
                         meter=meter,
                         bill_id=meter.meter_id,
                         bill_total_amount=0,
@@ -106,7 +106,7 @@ class AddHouse(View):
                         meter_type=meter_type2,
                     )
                     meter2.save()
-                    initial_reading = CalculatedBills(
+                    initial_reading = CalculatedBill(
                         meter=meter2,
                         bill_id=meter2.meter_id,
                         bill_total_amount=0,
@@ -115,7 +115,7 @@ class AddHouse(View):
                         bill_reading=bill_initial_reading2
                     )
                     initial_reading.save()
-                messages.success(request, 'Succes')
+                messages.success(request, 'Success')
             except Exception as e:
                 print(e)
                 messages.error(request, 'Error')
@@ -130,7 +130,7 @@ class ShowAreas(View):
         
         context={} 
         if block_name:
-            areas = Areas.objects.filter(
+            areas = Area.objects.filter(
                 area_block=block_name 
             )
             residential = request.GET.get('residential', None)
@@ -144,7 +144,7 @@ class ShowAreas(View):
                     area_type='commercial'
                 )
             for area in areas:
-                bills = CalculatedBills.objects.filter(
+                bills = CalculatedBill.objects.filter(
                     meter__house__id=area.id
                 )
                 unpaid = any(bill.bill_status == 'Unpaid' for bill in bills)
@@ -164,11 +164,11 @@ class ShowAreaDetails(View):
             area_id = kwargs.get('area_id', None)
             context={} 
             if area_id:
-                area = Areas.objects.filter(
+                area = Area.objects.filter(
                     id=area_id
                 ).first()
                 
-                bills = CalculatedBills.objects.filter(
+                bills = CalculatedBill.objects.filter(
                     meter__house__id=area_id
                 )
            

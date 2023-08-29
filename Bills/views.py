@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from .models import Meter, CalculatedBills
-from Area.models import Areas
+from .models import Meter, CalculatedBill
+from Area.models import Area
 from UnitsRate.models import *
 from django.contrib import messages
 from django.db.models import Sum
 from datetime import datetime, timedelta
+from decimal import Decimal
 
 # Create your views here.
 from django.views.generic.detail import View
@@ -31,11 +32,10 @@ class ShowMetersDetails(View):
         house = meter.house.house_number
         context = {}
         total_amount = 0
-        bills = CalculatedBills.objects.filter(
+        bills = CalculatedBill.objects.filter(
             meter__id=meter.id,
             bill_status='Unpaid'
         )
-        print(bills[0].created_at)
         for bill in bills:
             provided_date = str(bill.created_at)
             print(provided_date)
@@ -77,24 +77,42 @@ class ShowMetersDetails(View):
             meter = Meter.objects.filter(
                 id=meter_id
             ).first()
-            bill = CalculatedBills.objects.filter(
+            bill = CalculatedBill.objects.filter(
                 meter__id=meter_id
             ).last()
             print(bill.bill_reading)
             bill_total_reading = int(bill_reading) -  int(bill.bill_reading) 
             print(bill_total_reading)
             bill_total_amount = 0
+            unit_value_less_than_200_model = UnitValues200OrLess.objects.all().first()
+            unit_value_less_than_400_model = UnitValues400OrLess.objects.all().first()
+            unit_value_less_than_600_model = UnitValues600OrLess.objects.all().first()
             if meter.house.area_type == 'commercial':
                 if bill.bill_status == "Unpaid":
                     bill_total_amount = float(bill.bill_total_amount)
-                bill_total_amount += bill_total_reading * float(CommercialUnitRates.objects.all().first().commercial_unit_price)
+                    if Decimal(bill.bill_reading) <=  Decimal(unit_value_less_than_200_model.range_for_200_or_less_commercial) and (Decimal(bill.bill_reading) < Decimal(unit_value_less_than_400_model.range_for_400_or_less_commercial) and Decimal(bill.bill_reading) < Decimal(unit_value_less_than_600_model. range_for_600_or_less_commercial)):
+                        bill_total_amount += bill_total_reading * float(unit_value_less_than_200_model.unit_price_for_200_less_units_commercial)
+                    elif Decimal(bill.bill_reading) <= Decimal(unit_value_less_than_400_model.range_for_400_or_less_commercial) and (Decimal(bill.bill_reading) > Decimal(unit_value_less_than_200_model.range_for_200_or_less_commercial) and Decimal(bill.bill_reading) < Decimal(unit_value_less_than_600_model.range_for_600_or_less_commercial)):
+                        bill_total_amount += bill_total_reading * float(unit_value_less_than_400_model.unit_price_for_400_less_units_commercial)
+                    elif Decimal(bill.bill_reading) <= Decimal(unit_value_less_than_600_model.range_for_600_or_less_commercial) and (Decimal(bill.bill_reading) > Decimal(unit_value_less_than_400_model.range_for_400_or_less_commercial) and Decimal(bill.bill_reading) > Decimal(unit_value_less_than_200_model.range_for_200_or_less_commercial)):
+                        bill_total_amount += bill_total_reading * float(unit_value_less_than_400_model.unit_price_for_400_less_units_commercial)
+                    else:
+                        bill_total_amount += bill_total_reading * float(unit_value_less_than_400_model.unit_price_for_400_less_units_commercial)
+
             else:
                 if bill.bill_status == "Unpaid":
                     bill_total_amount = float(bill.bill_total_amount)
-                bill_total_amount += bill_total_reading * float(ResidentialUnitRates.objects.all().first().residential_unit_price)
+                    if Decimal(bill.bill_reading) <=  Decimal(unit_value_less_than_200_model.range_for_200_or_less_residential) and (Decimal(bill.bill_reading) < Decimal(unit_value_less_than_400_model.range_for_400_or_less_residentials) and Decimal(bill.bill_reading) < Decimal(unit_value_less_than_600_model.range_for_600_or_less_residentials)):
+                        bill_total_amount += bill_total_reading * float(unit_value_less_than_200_model.unit_price_for_200_less_units_residentails)
+                    elif Decimal(bill.bill_reading) <= Decimal(unit_value_less_than_400_model.range_for_400_or_less_residentials) and (Decimal(bill.bill_reading) > Decimal(unit_value_less_than_200_model.range_for_200_or_less_residential) and Decimal(bill.bill_reading) < Decimal(unit_value_less_than_600_model.range_for_600_or_less_residentials)):
+                        bill_total_amount += bill_total_reading * float(unit_value_less_than_400_model.unit_price_for_400_less_units_residentials)
+                    elif Decimal(bill.bill_reading) <= Decimal(unit_value_less_than_600_model.range_for_600_or_less_residentials) and (Decimal(bill.bill_reading) > Decimal(unit_value_less_than_400_model.range_for_400_or_less_residentials) and Decimal(bill.bill_reading) > Decimal(unit_value_less_than_200_model.range_for_200_or_less_residential)):
+                        bill_total_amount += bill_total_reading * float(unit_value_less_than_600_model.unit_price_for_600_less_units_residentials)
+                    else:
+                        bill_total_amount += bill_total_reading * float(unit_value_less_than_600_model.unit_price_for_600_less_units_residentials)
             bill_total_amount += float(MiscellaneousCharges.objects.all().first().miscellaneous_charges)
             try:
-                bill = CalculatedBills(
+                bill = CalculatedBill(
                     meter=meter,
                     bill_id=meter.meter_id,
                     bill_total_amount=bill_total_amount,
@@ -103,7 +121,7 @@ class ShowMetersDetails(View):
                     bill_status='Unpaid'
                 )
                 bill.save()
-                messages.success(request, "Succes")
+                messages.success(request, "Success")
             except Exception as e:
                 print(e)
                 messages.error(request, 'Error')
@@ -114,7 +132,7 @@ class ShowMetersDetails(View):
             total_amount = float(request.POST.get('total_amount', None))
             recieved_amount = float(request.POST.get('r_amount', None))
             print(total_amount, recieved_amount)
-            bills = CalculatedBills.objects.filter(
+            bills = CalculatedBill.objects.filter(
                 meter__id=meter_id
             )
             if int(total_amount) == int(recieved_amount):
@@ -123,7 +141,7 @@ class ShowMetersDetails(View):
                         bill.bill_status = 'Paid'
                         bill.remaing_dues = 0
                         bill.save()
-                    messages.success(request, "Succes")
+                    messages.success(request, "Success")
                 except Exception as e:
                     print(e)
                     messages.error(request, "Error")

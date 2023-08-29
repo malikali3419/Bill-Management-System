@@ -2,117 +2,187 @@
 <!-- asdasd -->
 {%block content %}
 <div>
-     {% if not messages %}
+  {% if not messages %}
   <form class="my-form" id="my-form" enctype="multipart/form-data" method="POST">
     {%csrf_token %}
     <div class="container">
       <h1>Add Unit Prices</h1>
       <ul>
-        
+
         <li>
           <div>
-             <label for="c_unit_price" class="text-light">Commercial Area Unit Price</label>
-            <input type="number" name="c_unit_price" value="{{c_unit_rates.commercial_unit_price}}" placeholder="Commercial Unit Prices" required />  
+            <label for="c_unit_price" class="text-light">Commercial Area Unit Price</label>
+            <input type="number" name="c_unit_price" value="{{c_unit_rates.commercial_unit_price}}"
+              placeholder="Commercial Unit Prices" required />
           </div>
         </li>
         <li>
-          <div >
+          <div>
             <label for="r_unit_peices" class="text-light">Residential Area Unit Prices</label>
-            <input type="number" name="r_unit_peices" value="{{r_unit_rates.residential_unit_price}}" placeholder="Residential Unit Prices" required />
-          </div>
-        </li>
-         <li>
-          <div >
-            <label for="fine" class="text-light">Fine After Due Date</label>
-               <input type="number" name="fine" value="{{fine_after_due_date.fine_after_due_date}}" placeholder="Fine After Due Date (%)" required />
-          
+            <input type="number" name="r_unit_peices" value="{{r_unit_rates.residential_unit_price}}"
+              placeholder="Residential Unit Prices" required />
           </div>
         </li>
         <li>
-          <div >
-              <label for="m_charges" class="text-light">Miscellaneous 2charges</label>
-               <input type="number" name="m_charges" value="{{m_charges.miscellaneous_charges}}" placeholder="Miscellaneous Charges" required />
-          
+          <div>
+            <label for="fine" class="text-light">Fine After Due Date</label>
+            <input type="number" name="fine" value="{{fine_after_due_date.fine_after_due_date}}"
+              placeholder="Fine After Due Date (%)" required />
+
           </div>
         </li>
-        
+        <li>
+          <div>
+
+            <label for="m_charges" class="text-light">Miscellaneous 2charges</label>
+            <input type="number" name="m_charges" value="{{m_charges.miscellaneous_charges}}"
+              placeholder="Miscellaneous Charges" required />
+
+          </div>
+        </li>
+        <div class="inputs-range">
+          <li class="details mt-4">
+            <label for="fine" class="text-light">Unit price Residential - 200</label>
+            <input type="range" max="200" name="200_input_range_r" id="range_unit_200" min="0"
+              value="{{unit_or_range_values_less_than_200.range_for_200_or_less_residential}}" step="1"
+              onchange="updatevalues('range_unit_200','unit_charges_200', '0')">
+            <input type="text" name="m_charges"
+              value="{{unit_or_range_values_less_than_200.range_for_200_or_less_residential}}" id="unit_charges_200"
+              disabled placeholder="Range" required />
+            <input type="number" name="200_unit_price_r"
+              value="{{unit_or_range_values_less_than_200.unit_price_for_200_less_units_residentails}}"
+              placeholder="Unit Price" required />
+          </li>
+          <li class="details mt-4">
+            <label for="fine" class="text-light">Unit price Residential - 400</label>
+            <input type="range" max="400" name="400_input_range_r"
+              value="{{unit_or_range_values_less_than_400.range_for_400_or_less_residentials}}" id="range_unit_400"
+              min="200" value="1" step="1" onchange="updatevalues('range_unit_400','unit_charges_400', '200')">
+            <input type="text" name="m_charges"
+              value="{{unit_or_range_values_less_than_400.range_for_400_or_less_residentials}}" id="unit_charges_400"
+              placeholder="Range" disabled required />
+            <input type="number"
+              value="{{unit_or_range_values_less_than_400.unit_price_for_400_less_units_residentials}}"
+              name="400_unit_price_r" placeholder="Unit Price" required />
+          </li>
+          <li class="details mt-4">
+            <label for="fine" class="text-light">Unit price Residential - 600</label>
+            <input type="range" max="600" name="600_input_range_r" id="range_unit_600" min="400"
+              value="{{unit_or_range_values_less_than_600.range_for_600_or_less_residentials}}" step="1"
+              onchange="updatevalues('range_unit_600','unit_charges_600', '400')">
+            <input type="text" name="m_charges"
+              value="{{unit_or_range_values_less_than_600.range_for_600_or_less_residentials}}" id="unit_charges_600"
+              placeholder="Range" disabled required />
+            <input type="number" name="600_unit_price_r"
+              value="{{unit_or_range_values_less_than_600.unit_price_for_600_less_units_residentials}}"
+              placeholder="Unit Price" required />
+          </li>
+        </div>
+        <div class="inputs-range">
+          <li class="details mt-4">
+            <label for="fine" class="text-light">Unit price Commercial - 200</label>
+            <input type="range" max="200" name="200_input_range_c"
+              value="{{unit_or_range_values_less_than_200.range_for_200_or_less_commercial}}" id="range_unit_200_c"
+              min="0" value="0" step="1" onchange="updatevalues('range_unit_200_c','unit_charges_200_c', '0')">
+            <input type="text" value="{{unit_or_range_values_less_than_200.range_for_200_or_less_commercial}}"
+              name="m_charges" id="unit_charges_200_c" disabled placeholder="Range" required />
+            <input type="number" name="200_unit_price_c"
+              value="{{unit_or_range_values_less_than_200.unit_price_for_200_less_units_commercial}}"
+              placeholder="Unit Price" required />
+          </li>
+          <li class="details mt-4">
+            <label for="fine" class="text-light">Unit price Commercial - 400</label>
+            <input type="range" value="{{unit_or_range_values_less_than_400.range_for_400_or_less_commercial}}"
+              max="400" name="400_input_range_c" id="range_unit_400_c" min="200" value="1" step="1"
+              onchange="updatevalues('range_unit_400_c','unit_charges_400_c', '200')">
+            <input type="text" value="{{unit_or_range_values_less_than_400.range_for_400_or_less_commercial}}"
+              name="m_charges" id="unit_charges_400_c" placeholder="Range" disabled required />
+            <input type="number" value="{{unit_or_range_values_less_than_400.unit_price_for_400_less_units_commercial}}"
+              name="400_unit_price_c" placeholder="Unit Price" required />
+          </li>
+          <li class="details mt-4">
+            <label for="fine" class="text-light">Unit price Commercial - 600</label>
+            <input type="range" value="{{unit_or_range_values_less_than_600.range_for_600_or_less_commercial}}"
+              max="600" name="600_input_range_c" id="range_unit_600_c" min="400" value="1" step="1"
+              onchange="updatevalues('range_unit_600_c','unit_charges_600_c', '400')">
+            <input type="text" value="{{unit_or_range_values_less_than_600.range_for_600_or_less_commercial}}"
+              name="m_charges" id="unit_charges_600_c" placeholder="Range" disabled required />
+            <input type="number" value="{{unit_or_range_values_less_than_600.unit_price_for_600_less_units_commercial}}"
+              name="600_unit_price_c" placeholder="Unit Price" required />
+          </li>
+        </div>
         <li>
           <input type="checkbox" id="terms" />
-          <label for="terms" style="color: red;"
-            >Confirm
+          <label for="terms" style="color: red;">Confirm
         </li>
         <li>
           <div class="grid grid-3">
             <div class="required-msg">REQUIRED FIELDS</div>
-            <button class="btn-grid" type="submit" onclick="document.getElementById('my-form').submit();  document.getElementById('my-form').style.display='none';return false;" disabled>
+            <button class="btn-grid" type="submit"
+              onclick="document.getElementById('my-form').submit();  document.getElementById('my-form').style.display='none';return false;"
+              disabled>
               <span class="back">
-                <img
-                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/email-icon.svg"
-                  alt=""
-                />
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/email-icon.svg" alt="" />
               </span>
               <span class="front">SUBMIT</span>
             </button>
             <button class="btn-grid" type="reset" disabled>
               <span class="back">
-                <img
-                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/eraser-icon.svg"
-                  alt=""
-                />
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/eraser-icon.svg" alt="" />
               </span>
               <span class="front">RESET</span>
             </button>
           </div>
-        </li> 
+        </li>
       </ul>
     </div>
   </form>
   {%endif%}
-   {% if messages %}
-<ul class="messages">
+  {% if messages %}
+  <ul class="messages">
     {% for message in messages %}
-<div class="box"> 
-    {% if message.tags == 'success' %}
-        <div class="success alert">
-            <div class="alert-body">
-            {{ message }}
-            </div>
+    <div class="box">
+      {% if message.tags == 'success' %}
+      <div class="success alert">
+        <div class="alert-body">
+          {{ message }}
         </div>
-    {% else %}
-        <div class="error alert">
-            <div class="alert-body">
-                {{ message }}
-            </div>
+      </div>
+      {% else %}
+      <div class="error alert">
+        <div class="alert-body">
+          {{ message }}
         </div>
-    {% endif %}
-</div>
-{% endfor %}
-</ul>
-{% endif %}
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </ul>
+  {% endif %}
 
 </div>
 <script>
-    var count = 0
-    function showMore(event){
-        if (count === 0){
-            meter_li = document.getElementsByClassName('meter-li1')
-        console.log(count);
-        for( const i of meter_li){
-            i.style.display = 'block'
-        }
-        count +=1
-        }
-        else if(count === 1){
-             meter_li = document.getElementsByClassName('meter-li2')
-            console.log(count);
-            for( const i of meter_li){
-                i.style.display = 'block'
-            }
-            count +=1
-
-        }
-        
+  var count = 0
+  function showMore(event) {
+    if (count === 0) {
+      meter_li = document.getElementsByClassName('meter-li1')
+      console.log(count);
+      for (const i of meter_li) {
+        i.style.display = 'block'
+      }
+      count += 1
     }
+    else if (count === 1) {
+      meter_li = document.getElementsByClassName('meter-li2')
+      console.log(count);
+      for (const i of meter_li) {
+        i.style.display = 'block'
+      }
+      count += 1
+
+    }
+
+  }
   const checkbox = document.querySelector('.my-form input[type="checkbox"]');
   const btns = document.querySelectorAll(".my-form button");
 
@@ -122,5 +192,15 @@
       checked ? (btn.disabled = false) : (btn.disabled = true);
     }
   });
+  function updatevalues(range_input, input_id, min_range) {
+
+
+    var rangeValue = parseInt(document.getElementById(range_input).value, 10);
+    var result = min_range + " - " + rangeValue.toString();
+
+    document.getElementById(input_id).value = result.toString()
+  }
+
+
 </script>
 {%endblock%}
