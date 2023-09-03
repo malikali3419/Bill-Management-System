@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'BillManagmentSystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'newBill',
+        'NAME': 'bill_testing2',
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost',  # or the hostname where PostgreSQL is running

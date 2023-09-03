@@ -10,7 +10,8 @@ urlpatterns = [
     path('blocks/<str:block_name>',ShowAreas.as_view(), name='blocks_areas'),
     path('area/<str:area_id>',ShowAreaDetails.as_view(), name='area_details'),
     path('Addhouse/',AddHouse.as_view(), name='Home'),
-    path('logout/',Logout.as_view(), name='Home')
+    path('logout/',Logout.as_view(), name='Home'),
+    path('dump/', CreateDump.as_view(), name='dumpdata')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -8,21 +8,6 @@
     <div class="container">
       <h1>Add Unit Prices</h1>
       <ul>
-
-        <li>
-          <div>
-            <label for="c_unit_price" class="text-light">Commercial Area Unit Price</label>
-            <input type="number" name="c_unit_price" value="{{c_unit_rates.commercial_unit_price}}"
-              placeholder="Commercial Unit Prices" required />
-          </div>
-        </li>
-        <li>
-          <div>
-            <label for="r_unit_peices" class="text-light">Residential Area Unit Prices</label>
-            <input type="number" name="r_unit_peices" value="{{r_unit_rates.residential_unit_price}}"
-              placeholder="Residential Unit Prices" required />
-          </div>
-        </li>
         <li>
           <div>
             <label for="fine" class="text-light">Fine After Due Date</label>
@@ -42,73 +27,104 @@
         </li>
         <div class="inputs-range">
           <li class="details mt-4">
-            <label for="fine" class="text-light">Unit price Residential - 200</label>
-            <input type="range" max="200" name="200_input_range_r" id="range_unit_200" min="0"
-              value="{{unit_or_range_values_less_than_200.range_for_200_or_less_residential}}" step="1"
-              onchange="updatevalues('range_unit_200','unit_charges_200', '0')">
+            <label for="fine" class="text-light">Unit price Residential -
+              {{first_range_of_unitValues.range_of_units_residential|floatformat:"0"}}</label>
+            <input type="range" max="5000" name="first_range_input_r" id="range_unit_200" min="0"
+              value="{{first_range_of_unitValues.range_of_units_residential}}" step="1"
+              onchange="updatevalues('range_unit_200','unit_charges_200', 'range_unit_200', '400_unit_price_header')">
             <input type="text" name="m_charges"
-              value="{{unit_or_range_values_less_than_200.range_for_200_or_less_residential}}" id="unit_charges_200"
+              value="{{first_range_of_unitValues.range_of_units_residential|floatformat:'0'}}" id="unit_charges_200"
               disabled placeholder="Range" required />
-            <input type="number" name="200_unit_price_r"
-              value="{{unit_or_range_values_less_than_200.unit_price_for_200_less_units_residentails}}"
-              placeholder="Unit Price" required />
+            <input type="number" name="first_range_unit_charges_r"
+              value="{{first_range_of_unitValues.unit_price_for_first_range_residentails}}" placeholder="Unit Price"
+              required />
           </li>
           <li class="details mt-4">
-            <label for="fine" class="text-light">Unit price Residential - 400</label>
-            <input type="range" max="400" name="400_input_range_r"
-              value="{{unit_or_range_values_less_than_400.range_for_400_or_less_residentials}}" id="range_unit_400"
-              min="200" value="1" step="1" onchange="updatevalues('range_unit_400','unit_charges_400', '200')">
+            <label for="fine" id="400_unit_price_header" class="text-light">Unit price Residential -
+              {{second_range_of_unit_values.range_of_units_residential|floatformat:"0"}}</label>
+            <input type="range" max="5000" name="second_range_input_r"
+              value="{{second_range_of_unit_values.range_of_units_residential}}" id="range_unit_400" min="200" value="1"
+              step="1"
+              onchange="updatevalues('range_unit_400','unit_charges_400', 'range_unit_200', '600_unit_price_header')">
             <input type="text" name="m_charges"
-              value="{{unit_or_range_values_less_than_400.range_for_400_or_less_residentials}}" id="unit_charges_400"
+              value="{{second_range_of_unit_values.range_of_units_residential|floatformat:'0'}}" id="unit_charges_400"
               placeholder="Range" disabled required />
-            <input type="number"
-              value="{{unit_or_range_values_less_than_400.unit_price_for_400_less_units_residentials}}"
-              name="400_unit_price_r" placeholder="Unit Price" required />
+            <input type="number" value="{{second_range_of_unit_values.unit_price_for_second_range_residentails}}"
+              name="second_range_unit_charges_r" placeholder="Unit Price" required />
           </li>
           <li class="details mt-4">
-            <label for="fine" class="text-light">Unit price Residential - 600</label>
-            <input type="range" max="600" name="600_input_range_r" id="range_unit_600" min="400"
-              value="{{unit_or_range_values_less_than_600.range_for_600_or_less_residentials}}" step="1"
-              onchange="updatevalues('range_unit_600','unit_charges_600', '400')">
+            <label for="fine" id="600_unit_price_header" class="text-light">Unit price Residential -
+              {{third_range_of_unit_values.range_of_units_residential|floatformat:"0"}}</label>
+            <input type="range" max="5000" name="third_range_input_r" id="range_unit_600" min="400"
+              value="{{third_range_of_unit_values.range_of_units_residential}}" step="1"
+              onchange="updatevalues('range_unit_600','unit_charges_600', 'range_unit_400', '800_unit_price_header')">
             <input type="text" name="m_charges"
-              value="{{unit_or_range_values_less_than_600.range_for_600_or_less_residentials}}" id="unit_charges_600"
+              value="{{third_range_of_unit_values.range_of_units_residential|floatformat:'0'}}" id="unit_charges_600"
               placeholder="Range" disabled required />
-            <input type="number" name="600_unit_price_r"
-              value="{{unit_or_range_values_less_than_600.unit_price_for_600_less_units_residentials}}"
-              placeholder="Unit Price" required />
+            <input type="number" name="third_range_unit_charges_r"
+              value="{{third_range_of_unit_values.unit_price_for_third_range_residentails}}" placeholder="Unit Price"
+              required />
+          </li>
+          <li class="details mt-4">
+            <label for="fine" id="800_unit_price_header" class="text-light">Unit price Residential -
+              {{fourth_range_of_unit_values.range_of_units_residential|floatformat:"0"}}</label>
+            <input type="range" max="5000" name="fourth_range_input_r" id="range_unit_800" min="400"
+              value="{{fourth_range_of_unit_values.range_of_units_residential}}" step="1"
+              onchange="updatevalues('range_unit_800','unit_charges_800', 'range_unit_600', 'range_unit_800')">
+            <input type="text" name="m_charges"
+              value="{{fourth_range_of_unit_values.range_of_units_residential|floatformat:'0'}}" id="unit_charges_800"
+              placeholder="Range" disabled required />
+            <input type="number" name="fourth_range_unit_charges_r"
+              value="{{fourth_range_of_unit_values.unit_price_for_fourht_range_residentails}}" placeholder="Unit Price"
+              required />
           </li>
         </div>
         <div class="inputs-range">
           <li class="details mt-4">
-            <label for="fine" class="text-light">Unit price Commercial - 200</label>
-            <input type="range" max="200" name="200_input_range_c"
-              value="{{unit_or_range_values_less_than_200.range_for_200_or_less_commercial}}" id="range_unit_200_c"
-              min="0" value="0" step="1" onchange="updatevalues('range_unit_200_c','unit_charges_200_c', '0')">
-            <input type="text" value="{{unit_or_range_values_less_than_200.range_for_200_or_less_commercial}}"
+            <label for="fine" class="text-light">Unit price Commercial -
+              {{first_range_of_unitValues.range_of_units_commercial|floatformat:"0"}}</label>
+            <input type="range" max="5000" name="first_range_input_c" id="range_unit_200_c"
+              value="{{first_range_of_unitValues.range_of_units_commercial}}" id="range_unit_200_c" min="0" value="0"
+              step="1"
+              onchange="updatevalues('range_unit_200_c','unit_charges_200_c', 'range_unit_200_c', '400_unit_price_header_c')">
+            <input type="text" value="{{first_range_of_unitValues.range_of_units_commercial|floatformat:'0'}}"
               name="m_charges" id="unit_charges_200_c" disabled placeholder="Range" required />
-            <input type="number" name="200_unit_price_c"
-              value="{{unit_or_range_values_less_than_200.unit_price_for_200_less_units_commercial}}"
-              placeholder="Unit Price" required />
+            <input type="number" name="first_range_unit_charges_c"
+              value="{{first_range_of_unitValues.unit_price_for_first_range_wdcommercial}}" placeholder="Unit Price"
+              required />
           </li>
           <li class="details mt-4">
-            <label for="fine" class="text-light">Unit price Commercial - 400</label>
-            <input type="range" value="{{unit_or_range_values_less_than_400.range_for_400_or_less_commercial}}"
-              max="400" name="400_input_range_c" id="range_unit_400_c" min="200" value="1" step="1"
-              onchange="updatevalues('range_unit_400_c','unit_charges_400_c', '200')">
-            <input type="text" value="{{unit_or_range_values_less_than_400.range_for_400_or_less_commercial}}"
+            <label for="fine" class="text-light" id="400_unit_price_header_c">Unit price Commercial -
+              {{second_range_of_unit_values.range_of_units_commercial|floatformat:"0"}}</label>
+            <input type="range" value="{{second_range_of_unit_values.range_of_units_commercial}}" max="5000"
+              name="second_range_input_c" id="range_unit_400_c" min="200" value="1" step="1"
+              onchange="updatevalues('range_unit_400_c','unit_charges_400_c','range_unit_200_c', '600_unit_price_header_c')">
+            <input type="text" value="{{second_range_of_unit_values.range_of_units_commercial|floatformat:'0'}}"
               name="m_charges" id="unit_charges_400_c" placeholder="Range" disabled required />
-            <input type="number" value="{{unit_or_range_values_less_than_400.unit_price_for_400_less_units_commercial}}"
-              name="400_unit_price_c" placeholder="Unit Price" required />
+            <input type="number" value="{{second_range_of_unit_values.unit_price_for_second_range_wdcommercial}}"
+              name="second_range_unit_charges_c" placeholder="Unit Price" required />
           </li>
           <li class="details mt-4">
-            <label for="fine" class="text-light">Unit price Commercial - 600</label>
-            <input type="range" value="{{unit_or_range_values_less_than_600.range_for_600_or_less_commercial}}"
-              max="600" name="600_input_range_c" id="range_unit_600_c" min="400" value="1" step="1"
-              onchange="updatevalues('range_unit_600_c','unit_charges_600_c', '400')">
-            <input type="text" value="{{unit_or_range_values_less_than_600.range_for_600_or_less_commercial}}"
+            <label for="fine" class="text-light" id="600_unit_price_header_c">Unit price Commercial -
+              {{third_range_of_unit_values.range_of_units_commercial|floatformat:"0"}}</label>
+            <input type="range" value="{{third_range_of_unit_values.range_of_units_commercial}}" max="5000"
+              name="third_range_input_c" id="range_unit_600_c" min="400" value="1" step="1"
+              onchange="updatevalues('range_unit_600_c','unit_charges_600_c','range_unit_400_c', '800_unit_price_header_c')">
+            <input type="text" value="{{third_range_of_unit_values.range_of_units_commercial|floatformat:'0'}}"
               name="m_charges" id="unit_charges_600_c" placeholder="Range" disabled required />
-            <input type="number" value="{{unit_or_range_values_less_than_600.unit_price_for_600_less_units_commercial}}"
-              name="600_unit_price_c" placeholder="Unit Price" required />
+            <input type="number" value="{{third_range_of_unit_values.unit_price_for_third_range_wdcommercial}}"
+              name="third_range_unit_charges_c" placeholder="Unit Price" required />
+          </li>
+          <li class="details mt-4">
+            <label for="fine" class="text-light" id="800_unit_price_header_c">Unit price Commercial -
+              {{fourth_range_of_unit_values.range_of_units_commercial|floatformat:"0"}}</label>
+            <input type="range" value="{{fourth_range_of_unit_values.range_of_units_commercial}}" max="5000"
+              name="fourth_range_input_c" id="range_unit_800_c" min="400" value="1" step="1"
+              onchange="updatevalues('range_unit_800_c','unit_charges_800_c','range_unit_600_c', '800_unit_price_header')">
+            <input type="text" value="{{fourth_range_of_unit_values.range_of_units_commercial|floatformat:'0'}}"
+              name="m_charges" id="unit_charges_800_c" placeholder="Range" disabled required />
+            <input type="number" value="{{fourth_range_of_unit_values.unit_price_for_fourth_range_wdcommercial}}"
+              name="fourth_range_unit_charges_c" placeholder="Unit Price" required />
           </li>
         </div>
         <li>
@@ -192,11 +208,12 @@
       checked ? (btn.disabled = false) : (btn.disabled = true);
     }
   });
-  function updatevalues(range_input, input_id, min_range) {
-
+  function updatevalues(range_input, input_id, min_range, header_id) {
+    document.getElementById(header_id).innerHTML = "Unit price Residential - " + document.getElementById(range_input).value
+    console.log(min_range);
 
     var rangeValue = parseInt(document.getElementById(range_input).value, 10);
-    var result = min_range + " - " + rangeValue.toString();
+    var result = document.getElementById(min_range).value + " - " + rangeValue.toString();
 
     document.getElementById(input_id).value = result.toString()
   }

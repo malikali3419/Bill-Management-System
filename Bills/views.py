@@ -29,44 +29,42 @@ class ShowMetersDetails(View):
         meter = Meter.objects.filter(
             id=meter_id
         ).first()
+        print("metere", meter)
         house = meter.house.house_number
         context = {}
-        total_amount = 0
+        total_amount_bills = 0
         bills = CalculatedBill.objects.filter(
             meter__id=meter.id,
             bill_status='Unpaid'
         )
-        for bill in bills:
-            provided_date = str(bill.created_at)
-            print(provided_date)
-           
-            current_date = datetime.now().date()
-           
-            provided_datetime = datetime.strptime(provided_date, "%Y-%m-%d %H:%M:%S.%f%z")
-            date_after_10_days = provided_datetime + timedelta(days=10)
-
-            # Sample current_date for demonstration purposes
-            current_date_str = str(current_date)
-            current_date = datetime.strptime(current_date_str, '%Y-%m-%d')
-
-            # Convert the offset-naive datetime to be offset-aware using the timezone of provided_datetime
-            current_date_aware = current_date.replace(tzinfo=provided_datetime.tzinfo)
-             
-            print(current_date_aware)
-            print(date_after_10_days)
-            if current_date_aware > date_after_10_days:
-                context['message'] = 'Inclding Fine After Due date'
-                total_amount += float(bill.bill_total_amount) * (float(FineAfterDueDate.objects.all().first().fine_after_due_date/100))
-            total_amount_bills = bills.aggregate(bill_total_amount=Sum('bill_total_amount'))['bill_total_amount']
-            
-            total_amount += float(total_amount_bills)
-        context['meter'] = meter
+        last_bill = CalculatedBill.objects.filter(
+            meter__id=meter.id,
+            bill_status='Unpaid'
+        ).last()
+        fine_due_date = 0
+        if last_bill:  
+            for bill in bills:
+                provided_date = str(bill.created_at)
+                current_date = datetime.now().date()
+                provided_datetime = datetime.strptime(provided_date, "%Y-%m-%d %H:%M:%S.%f%z")
+                date_after_10_days = provided_datetime + timedelta(days=10)
+                current_date_str = str(current_date)
+                current_date = datetime.strptime(current_date_str, '%Y-%m-%d')
+                current_date_aware = current_date.replace(tzinfo=provided_datetime.tzinfo)
+                if current_date_aware > date_after_10_days:
+                    context['message'] = 'Do you want to include Fine ?'
+                    fine_due_date += float(bill.bill_total_amount) * (float(FineAfterDueDate.objects.all().first().fine_after_due_date/100))
+            context['meter'] = meter
+            total_amount_bills = last_bill.bill_total_amount
         context['house'] = house
         if request.user.role == 'Meter Reader':
+            context['meter'] = meter
             return render(request, 'MeterReader/meter_details.html', context)
         if request.user.role == 'Manager':
+            context['meter'] = meter
             context['bills'] = bills
-            context['total_amount'] = total_amount
+            context['total_amount'] = float(total_amount_bills) 
+            context['fine'] = float(fine_due_date)
             return render(request, 'Manager/meter_details.html', context)
     
     def post(self,request,*args, **kwargs):
@@ -80,36 +78,40 @@ class ShowMetersDetails(View):
             bill = CalculatedBill.objects.filter(
                 meter__id=meter_id
             ).last()
-            print(bill.bill_reading)
+            
             bill_total_reading = int(bill_reading) -  int(bill.bill_reading) 
             print(bill_total_reading)
             bill_total_amount = 0
-            unit_value_less_than_200_model = UnitValues200OrLess.objects.all().first()
-            unit_value_less_than_400_model = UnitValues400OrLess.objects.all().first()
-            unit_value_less_than_600_model = UnitValues600OrLess.objects.all().first()
+            first_range_of_unitValues = FirstRangeOfUnitValues.objects.all().first()
+            second_range_of_unit_values = SecondtRangeOfUnitValues.objects.all().first()
+            third_range_of_unit_values = ThirdRangeOfUnitValues.objects.all().first()
+            fourth_range_of_unit_values = FouthRangeOfUnitValues.objects.all().first()
             if meter.house.area_type == 'commercial':
-                if bill.bill_status == "Unpaid":
+                if bill.bill_status == 'Unpaid':
                     bill_total_amount = float(bill.bill_total_amount)
-                    if Decimal(bill.bill_reading) <=  Decimal(unit_value_less_than_200_model.range_for_200_or_less_commercial) and (Decimal(bill.bill_reading) < Decimal(unit_value_less_than_400_model.range_for_400_or_less_commercial) and Decimal(bill.bill_reading) < Decimal(unit_value_less_than_600_model. range_for_600_or_less_commercial)):
-                        bill_total_amount += bill_total_reading * float(unit_value_less_than_200_model.unit_price_for_200_less_units_commercial)
-                    elif Decimal(bill.bill_reading) <= Decimal(unit_value_less_than_400_model.range_for_400_or_less_commercial) and (Decimal(bill.bill_reading) > Decimal(unit_value_less_than_200_model.range_for_200_or_less_commercial) and Decimal(bill.bill_reading) < Decimal(unit_value_less_than_600_model.range_for_600_or_less_commercial)):
-                        bill_total_amount += bill_total_reading * float(unit_value_less_than_400_model.unit_price_for_400_less_units_commercial)
-                    elif Decimal(bill.bill_reading) <= Decimal(unit_value_less_than_600_model.range_for_600_or_less_commercial) and (Decimal(bill.bill_reading) > Decimal(unit_value_less_than_400_model.range_for_400_or_less_commercial) and Decimal(bill.bill_reading) > Decimal(unit_value_less_than_200_model.range_for_200_or_less_commercial)):
-                        bill_total_amount += bill_total_reading * float(unit_value_less_than_400_model.unit_price_for_400_less_units_commercial)
-                    else:
-                        bill_total_amount += bill_total_reading * float(unit_value_less_than_400_model.unit_price_for_400_less_units_commercial)
-
+                if Decimal(bill_total_reading) <=  Decimal(first_range_of_unitValues.range_of_units_commercial) and (Decimal(bill.bill_reading) < Decimal(second_range_of_unit_values.range_of_units_commercial) and Decimal(bill.bill_reading) < Decimal(third_range_of_unit_values.range_of_units_commercial)< Decimal(fourth_range_of_unit_values.range_of_units_commercial)):
+                    bill_total_amount += bill_total_reading * float(first_range_of_unitValues.unit_price_for_first_range_wdcommercial)
+                elif Decimal(bill_total_reading) <= Decimal(second_range_of_unit_values.range_of_units_commercial) and (Decimal(bill.bill_reading) > Decimal(first_range_of_unitValues.range_of_units_commercial) and Decimal(bill.bill_reading) < Decimal(third_range_of_unit_values.range_of_units_commercial) < Decimal(fourth_range_of_unit_values.range_of_units_commercial)):
+                    bill_total_amount += bill_total_reading * float(second_range_of_unit_values.unit_price_for_second_range_wdcommercial)
+                elif Decimal(bill_total_reading) <= Decimal(third_range_of_unit_values.range_of_units_commercial) and (Decimal(bill.bill_reading) > Decimal(first_range_of_unitValues.range_of_units_commercial) and Decimal(bill.bill_reading) > Decimal(second_range_of_unit_values.range_of_units_commercial) < Decimal(fourth_range_of_unit_values.range_of_units_commercial)):
+                    bill_total_amount += bill_total_reading * float(third_range_of_unit_values.unit_price_for_third_range_wdcommercial)
+                elif Decimal(bill_total_reading) <= Decimal(fourth_range_of_unit_values.range_of_units_commercial) and (Decimal(bill.bill_reading) > Decimal(first_range_of_unitValues.range_of_units_commercial) and Decimal(bill.bill_reading) > Decimal(second_range_of_unit_values.range_of_units_commercial) < Decimal(third_range_of_unit_values.range_of_units_commercial)):
+                    bill_total_amount += bill_total_reading * float(fourth_range_of_unit_values.unit_price_for_fourth_range_wdcommercial)
+                else:
+                    bill_total_amount += bill_total_reading * float(fourth_range_of_unit_values.unit_price_for_fourth_range_wdcommercial)
             else:
-                if bill.bill_status == "Unpaid":
+                if bill.bill_status == 'Unpaid':
                     bill_total_amount = float(bill.bill_total_amount)
-                    if Decimal(bill.bill_reading) <=  Decimal(unit_value_less_than_200_model.range_for_200_or_less_residential) and (Decimal(bill.bill_reading) < Decimal(unit_value_less_than_400_model.range_for_400_or_less_residentials) and Decimal(bill.bill_reading) < Decimal(unit_value_less_than_600_model.range_for_600_or_less_residentials)):
-                        bill_total_amount += bill_total_reading * float(unit_value_less_than_200_model.unit_price_for_200_less_units_residentails)
-                    elif Decimal(bill.bill_reading) <= Decimal(unit_value_less_than_400_model.range_for_400_or_less_residentials) and (Decimal(bill.bill_reading) > Decimal(unit_value_less_than_200_model.range_for_200_or_less_residential) and Decimal(bill.bill_reading) < Decimal(unit_value_less_than_600_model.range_for_600_or_less_residentials)):
-                        bill_total_amount += bill_total_reading * float(unit_value_less_than_400_model.unit_price_for_400_less_units_residentials)
-                    elif Decimal(bill.bill_reading) <= Decimal(unit_value_less_than_600_model.range_for_600_or_less_residentials) and (Decimal(bill.bill_reading) > Decimal(unit_value_less_than_400_model.range_for_400_or_less_residentials) and Decimal(bill.bill_reading) > Decimal(unit_value_less_than_200_model.range_for_200_or_less_residential)):
-                        bill_total_amount += bill_total_reading * float(unit_value_less_than_600_model.unit_price_for_600_less_units_residentials)
-                    else:
-                        bill_total_amount += bill_total_reading * float(unit_value_less_than_600_model.unit_price_for_600_less_units_residentials)
+                if Decimal(bill_total_reading) <=  Decimal(first_range_of_unitValues.range_of_units_residential) and (Decimal(bill.bill_reading) < Decimal(second_range_of_unit_values.range_of_units_residential) and Decimal(bill.bill_reading) < Decimal(third_range_of_unit_values.range_of_units_residential)< Decimal(fourth_range_of_unit_values.range_of_units_residential)):
+                    bill_total_amount += bill_total_reading * float(first_range_of_unitValues.unit_price_for_first_range_residentails)
+                elif Decimal(bill_total_reading) <= Decimal(second_range_of_unit_values.range_of_units_residential) and (Decimal(bill.bill_reading) > Decimal(first_range_of_unitValues.range_of_units_residential) and Decimal(bill.bill_reading) < Decimal(third_range_of_unit_values.range_of_units_residential) < Decimal(fourth_range_of_unit_values.range_of_units_residential)):
+                    bill_total_amount += bill_total_reading * float(second_range_of_unit_values.unit_price_for_second_range_residentails)
+                elif Decimal(bill_total_reading) <= Decimal(third_range_of_unit_values.range_of_units_residential) and (Decimal(bill.bill_reading) > Decimal(first_range_of_unitValues.range_of_units_residential) and Decimal(bill.bill_reading) > Decimal(second_range_of_unit_values.range_of_units_residential) < Decimal(fourth_range_of_unit_values.range_of_units_residential)):
+                    bill_total_amount += bill_total_reading * float(third_range_of_unit_values.unit_price_for_third_range_residentails)
+                elif Decimal(bill_total_reading) <= Decimal(fourth_range_of_unit_values.range_of_units_residential) and (Decimal(bill.bill_reading) > Decimal(first_range_of_unitValues.range_of_units_residential) and Decimal(bill.bill_reading) > Decimal(second_range_of_unit_values.range_of_units_residential) < Decimal(third_range_of_unit_values.range_of_units_residential)):
+                    bill_total_amount += bill_total_reading * float(fourth_range_of_unit_values.unit_price_for_fourht_range_residentails)
+                else:
+                    bill_total_amount += bill_total_reading * float(fourth_range_of_unit_values.unit_price_for_fourht_range_residentails)
             bill_total_amount += float(MiscellaneousCharges.objects.all().first().miscellaneous_charges)
             try:
                 bill = CalculatedBill(
@@ -118,6 +120,7 @@ class ShowMetersDetails(View):
                     bill_total_amount=bill_total_amount,
                     bill_reading_img=bill_image,
                     bill_reading=bill_reading,
+                    units_consumed=bill_total_reading,
                     bill_status='Unpaid'
                 )
                 bill.save()

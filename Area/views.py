@@ -8,6 +8,10 @@ from django.http import HttpResponse
 from Area.models import Area, Block
 from Bills.models import Meter, CalculatedBill
 from django.contrib import messages
+import subprocess
+from django.http import HttpResponse
+from django.conf import settings
+import os
 
 class Home(View):
     def get(self,request,*args, **kwargs):
@@ -119,7 +123,10 @@ class AddHouse(View):
             except Exception as e:
                 print(e)
                 messages.error(request, 'Error')
-            return render(request, 'Add_area.html')     
+            if request.user.role == 'Admin':
+                return render(request, 'Add_area.html')     
+            elif request.user.role == 'Manager':
+                return render(request, './Manager/Add_area.html')
         return render(request, '404_not_found.html')
 
     
@@ -186,3 +193,15 @@ class Logout(View):
             logout(request)
             return redirect ('/User/login')
     
+
+
+class CreateDump(View):
+    def get(self, request, *args, **kwargs):
+        file_path = os.path.join(settings.BASE_DIR, 'db.json')
+        with open(file_path, 'w') as f:
+            subprocess.run(['python', 'manage.py', 'dumpdata'], stdout=f)
+        with open(file_path, 'rb') as f:
+            file_data = f.read()
+        response = HttpResponse(file_data, content_type='application/json')
+        response['Content-Disposition'] = 'attachment; filename="db.json"'
+        return response

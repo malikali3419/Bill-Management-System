@@ -39,6 +39,7 @@ class CalculatedBill(TimestampedModel):
     bill_reading = models.CharField(max_length=100, default=0, null=True, blank=True)
     bill_status = models.CharField(choices=BILL_STATUS_CHOICES, max_length=50, default=None, null=True, blank=True)
     payment_recieved = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    units_consumed = models.CharField(max_length=100, default=None, null=True, blank=True)
     remaing_dues = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
 
     def __str__(self) -> str:
