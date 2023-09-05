@@ -7,4 +7,5 @@ admin.site.register(FirstRangeOfUnitValues)
 admin.site.register(SecondtRangeOfUnitValues)
 admin.site.register(ThirdRangeOfUnitValues)
 admin.site.register(FouthRangeOfUnitValues)
+admin.site.register(DueDateForFine)
 

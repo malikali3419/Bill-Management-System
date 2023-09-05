@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.db.models import Sum
 from datetime import datetime, timedelta
 from decimal import Decimal
+import inflect
 
 # Create your views here.
 from django.views.generic.detail import View
@@ -44,14 +45,11 @@ class ShowMetersDetails(View):
         fine_due_date = 0
         if last_bill:  
             for bill in bills:
-                provided_date = str(bill.created_at)
+                provided_date = bill.created_at.date()  # Get the date part of bill.created_at
                 current_date = datetime.now().date()
-                provided_datetime = datetime.strptime(provided_date, "%Y-%m-%d %H:%M:%S.%f%z")
-                date_after_10_days = provided_datetime + timedelta(days=10)
-                current_date_str = str(current_date)
-                current_date = datetime.strptime(current_date_str, '%Y-%m-%d')
-                current_date_aware = current_date.replace(tzinfo=provided_datetime.tzinfo)
-                if current_date_aware > date_after_10_days:
+
+                date_after_10_days = DueDateForFine.objects.all().first()
+                if current_date > date_after_10_days.fine_date:
                     context['message'] = 'Do you want to include Fine ?'
                     fine_due_date += float(bill.bill_total_amount) * (float(FineAfterDueDate.objects.all().first().fine_after_due_date/100))
             context['meter'] = meter
@@ -148,12 +146,71 @@ class ShowMetersDetails(View):
                 except Exception as e:
                     print(e)
                     messages.error(request, "Error")
-
             else:
                 pass
             return render(request, 'Manager/meter_details.html')
         return render(request, '404-error.html')
         
+
+class GetbBill(View):
+    def get(self,request,*args, **kwargs):
+        meter_id = kwargs.get('meter_id', None)
+       
+        meter = Meter.objects.filter(
+            id=meter_id
+        ).first()
+        area = Area.objects.filter(
+            id=meter.house.id
+        ).first()
+        print(area)
+        bills = CalculatedBill.objects.filter(
+            meter__id=meter.id,
+            bill_status='Unpaid'
+        )
+        bill_history  = CalculatedBill.objects.filter(
+            meter__id=meter.id,
+        )[:6]
+        print(bill_history)
+        last_bill = CalculatedBill.objects.filter(
+            meter__id=meter.id,
+            bill_status='Unpaid'
+        ).last()
+        context = {}
+        fine_due_date = 0
+        provided_date = str(last_bill.created_at)
+        current_date = datetime.now().date()
+        provided_datetime = datetime.strptime(provided_date, "%Y-%m-%d %H:%M:%S.%f%z")
+        date_after_10_days = provided_datetime + timedelta(days=10)
+        if last_bill:  
+            for bill in bills:
+                provided_date = str(bill.created_at)
+                current_date = datetime.now().date()
+                provided_datetime = datetime.strptime(provided_date, "%Y-%m-%d %H:%M:%S.%f%z")
+                date_after_10_days = provided_datetime + timedelta(days=10)
+                current_date_str = str(current_date)
+                current_date = datetime.strptime(current_date_str, '%Y-%m-%d')
+                current_date_aware = current_date.replace(tzinfo=provided_datetime.tzinfo)
+                
+                fine_due_date += float(bill.bill_total_amount) * (float(FineAfterDueDate.objects.all().first().fine_after_due_date/100))
+            context['meter'] = meter
+            total_amount_bills = last_bill.bill_total_amount
+        context['history'] = bill_history
+        def number_to_words(number):
+            p = inflect.engine()
+            return p.number_to_words(number)
+        m_charges = MiscellaneousCharges.objects.all().first()
+        context['last_bill'] = last_bill
+        context['total_including_fine'] = float(total_amount_bills) + fine_due_date
+        context['fine'] = float(FineAfterDueDate.objects.all().first().fine_after_due_date)
+        context['m_charges'] = m_charges
+        context['due_date'] = date_after_10_days
+        context['total_amount'] = int(total_amount_bills)
+        context['amount_in_words'] = number_to_words(int(total_amount_bills))
+        context['area_details'] = area
+        return render(request, 'index.html', context)
+
+
+
 
 
 

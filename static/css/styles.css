@@ -168,11 +168,13 @@ body {
  .card {
      width: 230px;
      border-radius: 20px;
-     background: #1b233d;
+     background: #080808;
      padding: 5px;
      overflow: hidden;
      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 20px 0px;
      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 2px 2px 6px 10px rgba(255, 255, 255, 0.2);
+    
  }
 
  .card:hover {
@@ -184,9 +186,7 @@ body {
      border-radius: 15px;
      display: flex;
      flex-direction: column;
-     background: linear-gradient(45deg,
-             rgb(4, 159, 187) 0%,
-             rgb(80, 246, 255) 100%);
+    background: linear-gradient(45deg, rgb(172 182 122) 0%, rgb(255 205 80) 100%);
      position: relative;
  }
 
@@ -909,14 +909,15 @@ label {
 .blocks .btn {
     width: 140px;
     height: 50px;
-    background: linear-gradient(to top, #00154c, #12376e, #23487f);
+    background: linear-gradient(to top, #786a3c, #232218, #786a3c);
     color: #fff;
     border-radius: 50px;
     border: none;
     outline: none;
     cursor: pointer;
     position: relative;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 2px 6px 10px rgba(255, 255, 255, 0.2);
+
     overflow: hidden;
 }
 

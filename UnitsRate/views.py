@@ -4,6 +4,7 @@ from django.views.generic.detail import View
 from django.contrib import messages
 from decimal import Decimal
 # Create your views here.
+from datetime import datetime
 class AddUnitCharges(View):
     
     def get(self,request,*args, **kwargs):
@@ -15,6 +16,9 @@ class AddUnitCharges(View):
         second_range_of_unit_values = SecondtRangeOfUnitValues.objects.all().first()
         third_range_of_unit_values = ThirdRangeOfUnitValues.objects.all().first()
         fourth_range_of_unit_values = FouthRangeOfUnitValues.objects.all().first()
+        fine_due_date = DueDateForFine.objects.all().first()
+        fine_due_date = fine_due_date.fine_date
+        formatted_fine_due_date = fine_due_date.strftime('%Y-%m-%d')
         context = {}
         context['c_unit_rates'] = commercial_unit_rates
         context['r_unit_rates'] = residetail_unit_rates     
@@ -23,7 +27,7 @@ class AddUnitCharges(View):
         context['second_range_of_unit_values'] = second_range_of_unit_values
         context['third_range_of_unit_values'] = third_range_of_unit_values
         context['fourth_range_of_unit_values'] = fourth_range_of_unit_values
-       
+        context['fine_due_date'] = formatted_fine_due_date
         context['m_charges'] = m_charges_
         if request.user.is_superuser:
             return render(request, 'Add-unit-prices.html', context)
@@ -35,6 +39,7 @@ class AddUnitCharges(View):
         r_unit_price = request.POST.get('r_unit_peices', None)
         fine_after_due = request.POST.get('fine', None)
         m_charges = request.POST.get('m_charges', None)
+        fine_date = request.POST.get('fine_date', None)
         first_range_input_r =  Decimal(request.POST.get('first_range_input_r', None))
         second_range_input_r =  Decimal(request.POST.get('second_range_input_r', None))
         third_range_input_r =  Decimal(request.POST.get('third_range_input_r', None))
@@ -59,6 +64,7 @@ class AddUnitCharges(View):
         residetail_unit_rates = ResidentialUnitRates.objects.all().first()
         fine_after_due_date = FineAfterDueDate.objects.all().first()
         m_charges_ = MiscellaneousCharges.objects.all().first()
+        due_date_model = DueDateForFine.objects.all().first()
         if request.user.is_superuser or request.user.role == 'Admin' or request.user.role == 'Manager':
             try:
                 if first_range_of_unitValues:
@@ -156,6 +162,14 @@ class AddUnitCharges(View):
                 else:
                     new_m_charges = MiscellaneousCharges.objects.create(
                         miscellaneous_charges=m_charges
+                    )
+                if due_date_model:
+                    fine_date_ = DueDateForFine.objects.all().first()
+                    fine_date_.fine_date= fine_date
+                    fine_date_.save()
+                else:
+                    new_fine_date = DueDateForFine.objects.create(
+                        fine_date=fine_date
                     )
                     
                 messages.success(request, 'Success')
