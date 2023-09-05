@@ -13,6 +13,33 @@ class FineAfterDueDate(models.Model):
 class MiscellaneousCharges(models.Model):
     miscellaneous_charges = models.DecimalField(default=0, max_digits=10,decimal_places=2, null=True, blank=True)
 
+class DueDateForFine(models.Model):
+    fine_date = models.DateField(default=None,blank=True, null=True)
 
 
+class FirstRangeOfUnitValues(models.Model):
+    range_of_units_residential = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    unit_price_for_first_range_residentails = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    range_of_units_commercial = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    unit_price_for_first_range_wdcommercial = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+
+
+class SecondtRangeOfUnitValues(models.Model):
+    range_of_units_residential = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    unit_price_for_second_range_residentails = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    range_of_units_commercial = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    unit_price_for_second_range_wdcommercial = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+
+
+class ThirdRangeOfUnitValues(models.Model):
+    range_of_units_residential = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    unit_price_for_third_range_residentails = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    range_of_units_commercial = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    unit_price_for_third_range_wdcommercial = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+
+class FouthRangeOfUnitValues(models.Model):
+    range_of_units_residential = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    unit_price_for_fourht_range_residentails = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    range_of_units_commercial = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    unit_price_for_fourth_range_wdcommercial = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
 

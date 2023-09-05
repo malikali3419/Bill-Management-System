@@ -6,7 +6,7 @@ from django.db import models
 
 from datetime import datetime, timedelta, timezone
 
-class Areas(models.Model):
+class Area(models.Model):
     AREA_TYPE_CHOICES = [
         ('commercial','Commercial'),
         ('residential','Residential')
@@ -28,16 +28,18 @@ class Areas(models.Model):
     bill_paid_status = models.CharField(max_length=155, choices=BILL_STATUS_CHOICES, default='unpaid')
 
     def __str__(self) -> str:
-        return str(self.area_no)
+        return str(self.house_number)
 
     def is_reading_noted(self):
-        from Bills.models import Meter, CalculatedBills
+        from Bills.models import Meter, CalculatedBill
         today = datetime.now(timezone.utc)
         twenty_days_ago = today - timedelta(days=20)
         print(self.id)
-        bill = CalculatedBills.objects.filter(meter__house__id=self.id).order_by('-created_at').first()
+        bill = CalculatedBill.objects.filter(meter__house__id=self.id).order_by('-created_at').last()
         if bill:
             print(bill)
+            print(bill.updated_at)
+            print(twenty_days_ago)
             if bill.updated_at < twenty_days_ago:
                 return False
             else:

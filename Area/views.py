@@ -5,14 +5,18 @@ from django.views.generic.detail import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
 from django.http import HttpResponse
-from Area.models import Areas, Block
-from Bills.models import Meter, CalculatedBills
+from Area.models import Area, Block
+from Bills.models import Meter, CalculatedBill
 from django.contrib import messages
+import subprocess
+from django.http import HttpResponse
+from django.conf import settings
+import os
 
 class Home(View):
     def get(self,request,*args, **kwargs):
         context = {}
-        areas = Areas.objects.all()
+        areas = Area.objects.all()
         bill = Meter.objects.all()
         context['areas'] = areas
         blocks = Block.objects.all()
@@ -72,7 +76,7 @@ class AddHouse(View):
             bill_initial_reading2 = request.POST.get('bill_reading2', None)
             print(meter_id)
             try:
-                area = Areas(
+                area = Area(
                 owners_name=area_owner_name,
                 CNIC=owner_cnic,
                 house_number=area_no,
@@ -89,7 +93,7 @@ class AddHouse(View):
                         meter_type = meter_type,
                     )
                     meter.save()
-                    initial_reading = CalculatedBills(
+                    initial_reading = CalculatedBill(
                         meter=meter,
                         bill_id=meter.meter_id,
                         bill_total_amount=0,
@@ -106,7 +110,7 @@ class AddHouse(View):
                         meter_type=meter_type2,
                     )
                     meter2.save()
-                    initial_reading = CalculatedBills(
+                    initial_reading = CalculatedBill(
                         meter=meter2,
                         bill_id=meter2.meter_id,
                         bill_total_amount=0,
@@ -115,11 +119,14 @@ class AddHouse(View):
                         bill_reading=bill_initial_reading2
                     )
                     initial_reading.save()
-                messages.success(request, 'Succes')
+                messages.success(request, 'Success')
             except Exception as e:
                 print(e)
                 messages.error(request, 'Error')
-            return render(request, 'Add_area.html')     
+            if request.user.role == 'Admin':
+                return render(request, 'Add_area.html')     
+            elif request.user.role == 'Manager':
+                return render(request, './Manager/Add_area.html')
         return render(request, '404_not_found.html')
 
     
@@ -130,7 +137,7 @@ class ShowAreas(View):
         
         context={} 
         if block_name:
-            areas = Areas.objects.filter(
+            areas = Area.objects.filter(
                 area_block=block_name 
             )
             residential = request.GET.get('residential', None)
@@ -144,7 +151,7 @@ class ShowAreas(View):
                     area_type='commercial'
                 )
             for area in areas:
-                bills = CalculatedBills.objects.filter(
+                bills = CalculatedBill.objects.filter(
                     meter__house__id=area.id
                 )
                 unpaid = any(bill.bill_status == 'Unpaid' for bill in bills)
@@ -164,11 +171,11 @@ class ShowAreaDetails(View):
             area_id = kwargs.get('area_id', None)
             context={} 
             if area_id:
-                area = Areas.objects.filter(
+                area = Area.objects.filter(
                     id=area_id
                 ).first()
                 
-                bills = CalculatedBills.objects.filter(
+                bills = CalculatedBill.objects.filter(
                     meter__house__id=area_id
                 )
            
@@ -186,3 +193,15 @@ class Logout(View):
             logout(request)
             return redirect ('/User/login')
     
+
+
+class CreateDump(View):
+    def get(self, request, *args, **kwargs):
+        file_path = os.path.join(settings.BASE_DIR, 'db.json')
+        with open(file_path, 'w') as f:
+            subprocess.run(['python', 'manage.py', 'dumpdata'], stdout=f)
+        with open(file_path, 'rb') as f:
+            file_data = f.read()
+        response = HttpResponse(file_data, content_type='application/json')
+        response['Content-Disposition'] = 'attachment; filename="db.json"'
+        return response

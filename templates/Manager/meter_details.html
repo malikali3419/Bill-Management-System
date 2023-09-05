@@ -6,7 +6,7 @@
   <form class="my-form" id="my-form" enctype="multipart/form-data" method="POST">
     {%csrf_token %}
     <div class="container details">
-      <h1>Add Unit Prices</h1>
+      <h1>Bill Invoice</h1>
       <ul>
 
         <li>
@@ -18,55 +18,72 @@
         <li>
           <div>
             <label for="house_no" class="text-light">Meter No</label>
-            <input type="text" name="meter_number" disabled value="{{meter.meter_id}}"
-              placeholder="Residential Unit Prices" />
+            <input type="text" name="meter_number" disabled value="{{meter.meter_id}}" />
           </div>
         </li>
         {% if bills %}
         <li class="mt-5">
-          <h3>Bills Invoices</h3>
+          <h3 class="text-light">Bills Invoices</h3>
         </li>
         {%for i in bills%}
-        <li class="mt-4">
-          <div>
-            <label for="house_no" class="text-light">Bill Reading</label>
+        <div class="inputs-range">
+          <h3 class="text-light text-center">{{i.created_at}}</h3>
+          <li class="mt-4">
+            <div>
+              <label for="house_no" class="text-light">Bill Reading</label>
 
-            <input type="number" name="meter_reading" value="{{i.bill_reading}}" disabled />
-          </div>
-        </li>
-        <li>
-          <div>
+              <input type="number" name="meter_reading" value="{{i.bill_reading}}" disabled />
+            </div>
+          </li>
+          <li class="mt-4">
+            <div>
+              <label for="house_no" class="text-light">Units Consumed</label>
 
-            <label for="bill_amount" class="text-light">Bill Amount</label>
-            <input type="number" name="bill_amount" value="{{i.bill_total_amount}}" disabled />
-          </div>
+              <input type="number" name="meter_reading" value="{{i.units_consumed}}" disabled />
+            </div>
+          </li>
+          <li>
+            <div>
 
-        </li>
+              <label for="bill_amount" class="text-light">Bill Amount</label>
+              <input type="number" name="bill_amount" value="{{i.bill_total_amount}}" disabled />
+            </div>
+
+          </li>
+        </div>
         {%endfor%}
         <li>
           <div>
-            <h4 style="color: red;">{{message}}</h4>
-            <label for="house_no" class="text-light">Total Amount</label>
+            {%if message %}
+            <div class="d-flex justify-content-around">
+              <h4 style="color: red">{{message}}</h4>
+              <input type="number" name="fine" id="fine" hidden value="{{fine}}">
+              <label class="switch">
+                <input type="checkbox" class="checkbox" id="add-fine-toggler">
+                <div class="slider"></div>
+              </label>
+            </div>
+            {%endif%}
 
-            <input type="number" name="total_amount_visible" value="{{total_amount}}" disabled />
+            <label for="house_no" class="text-light">Total Amount</label>
+            <input type="number" name="total_amount_visible" id="total_amount_visible" value="{{total_amount}}"
+              disabled />
             <input type="hidden" id="total_amount" name="total_amount" value="{{total_amount}}" />
           </div>
         </li>
         <li>
           <div>
             <label for="r_amount" class="text-light">Recieved Amount</label>
-            <input type="number" id="r_amount" name="r_amount" placeholder="Recieved Amount" required />
+            <input type="number" id="r_amount" onchange="ValidatePayment(event)" name="r_amount"
+              placeholder="Recieved Amount" required />
           </div>
         </li>
 
-        <li>
-          <input type="checkbox" id="terms" />
-          <label for="terms" style="color: red;">Confirm
-        </li>
+
         <li>
           <div class="grid grid-3">
             <div class="required-msg">REQUIRED FIELDS</div>
-            <button class="btn-grid" type="submit"
+            <button class="btn-grid" type="submit" id="submit_btn"
               onclick="document.getElementById('my-form').submit();  document.getElementById('my-form').style.display='none';return false;"
               disabled>
               <span class="back">
@@ -74,14 +91,14 @@
               </span>
               <span class="front">SUBMIT</span>
             </button>
-            <button class="btn-grid" type="button" onclick="printContent()"
-              onclick="document.getElementById('my-form').submit();  document.getElementById('my-form').style.display='none';return false;"
-              disabled>
-              <span class="back">
-                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/email-icon.svg" alt="" />
-              </span>
-              <span class="front">PRINT</span>
-            </button>
+            <a href="{% url 'get_bill' meter_id=meter.id %}" target="_blank">
+              <button class="btn-grid" type="button">
+                <span class="back">
+                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/email-icon.svg" alt="" />
+                </span>
+                <span class="front">PRINT</span>
+              </button>
+            </a>
 
           </div>
         </li>
@@ -136,22 +153,37 @@
         i.style.display = 'block'
       }
       count += 1
-
     }
 
   }
-  const checkbox = document.querySelector('.my-form input[type="checkbox"]');
-  const btns = document.querySelectorAll(".my-form button");
-
-  checkbox.addEventListener("change", function () {
-    total_amount = document.getElementById('total_amount').value
+  const myInput = document.getElementById('r_amount');
+  myInput.addEventListener('input', function () {
+    ValidatePayment(event);
+  });
+  function ValidatePayment(event) {
+    total_amount = document.getElementById('total_amount_visible').value
     r_amount = document.getElementById('r_amount').value
     if (parseFloat(total_amount) === parseFloat(r_amount)) {
-      const checked = this.checked;
-      for (const btn of btns) {
-        checked ? (btn.disabled = false) : (btn.disabled = true);
-      }
+      document.getElementById('submit_btn').disabled = false
+      document.getElementById('submit_btn').blur();
+    }
+    else {
+      document.getElementById('submit_btn').disabled = true
+      document.getElementById('submit_btn').blur();
+    }
+  }
+  const addfine = document.getElementById('add-fine-toggler');
+  addfine.addEventListener('change', function () {
+    if (addfine.checked) {
+      console.log(document.getElementById('fine').value);
+      document.getElementById('total_amount_visible').value = parseFloat(document.getElementById('total_amount_visible').value) + parseFloat(document.getElementById('fine').value)
+      document.getElementById('total_amount').value = parseFloat(document.getElementById('total_amount').value) + parseFloat(document.getElementById('fine').value)
+      document.getElementById('submit_btn').disabled = true
+    } else {
+      document.getElementById('total_amount_visible').value = document.getElementById('total_amount_visible').value - document.getElementById('fine').value
+      document.getElementById('total_amount').value = document.getElementById('total_amount').value - document.getElementById('fine').value
     }
   });
+
 </script>
 {%endblock%}
