@@ -17,14 +17,11 @@
         </li>
         <li>
           <div>
-
             <label for="fine_date" class="text-light">Due Date for fine</label>
             <input type="date" name="fine_date" value="{{fine_due_date}}" placeholder="Select Fine date" />
-
           </div>
         </li>
         <li>
-
           <div>
             <label for="m_charges" class="text-light">Miscellaneous 2charges</label>
             <input type="number" name="m_charges" value="{{m_charges.miscellaneous_charges}}"
@@ -184,6 +181,11 @@
 
 </div>
 <script>
+  if (document.querySelector('.messages')) {
+      setTimeout(function() {
+        window.location.href = "/home";
+      }, 2000); // 2000 milliseconds = 2 seconds
+    }
   var count = 0
   function showMore(event) {
     if (count === 0) {

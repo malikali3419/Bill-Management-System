@@ -1,5 +1,26 @@
 {% extends "base_site.html" %} {% block title %} Admin | Home {% endblock %}
 {%block content %} {% load static %}
+<div class="p-5 d-flex justify-content-center align-items-center">
+
+  <form class="input__container input__container--variant mx-5" method="GET">
+    <div class="shadow__input shadow__input--variant"></div>
+    <input type="text" name="house_no" class="input__search input__search--variant" placeholder="Search by House no">
+    <button class="input__button__shadow input__button__shadow--variant">
+      <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" height="1.5em" width="13em">
+        <path d="M4 9a5 5 0 1110 0A5 5 0 014 9zm5-7a7 7 0 104.2 12.6.999.999 0 00.093.107l3 3a1 1 0 001.414-1.414l-3-3a.999.999 0 00-.107-.093A7 7 0 009 2z" fill-rule="evenodd" fill="#FFF"></path>
+      </svg>
+    </button>
+  </form>
+  <form class="input__container input__container--variant mx-5" method="GET">
+    <div class="shadow__input shadow__input--variant"></div>
+    <input type="text" name="owner_name" class="input__search input__search--variant" placeholder="Search by Owner name">
+    <button class="input__button__shadow input__button__shadow--variant">
+      <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" height="1.5em" width="13em">
+        <path d="M4 9a5 5 0 1110 0A5 5 0 014 9zm5-7a7 7 0 104.2 12.6.999.999 0 00.093.107l3 3a1 1 0 001.414-1.414l-3-3a.999.999 0 00-.107-.093A7 7 0 009 2z" fill-rule="evenodd" fill="#FFF"></path>
+      </svg>
+    </button>
+  </form>
+</div>
 <div class="row cards-row">
   <form
     class="row blocks d-flex justify-content-center align-items-center my-5"
@@ -29,7 +50,7 @@
   </form>
   {%for i in areas%}
 
-  <div class="card col-lg-3 col-sm-12 col-md-6 mx-4 my-4">
+  <div class="card col-lg-3 col-sm-12 col-md-6 mx-4 my-4" onmouseover="showinfo(`info-{{i.id}}`)" onmouseout="hideinfo(`info-{{i.id}}`)">
     <a href="{% url 'area_details' area_id=i.id %}">
       <div class="top-section d-flex justify-content-center align-items-center">
         <img src="{% static '/css/homepage.gif' %}" alt="" width="140px" />
@@ -48,6 +69,10 @@
           <span class="regular-text" style="color: red"
             >{{i.bill_paid_status|upper}}</span
           >
+          {% elif i.bill_paid_status == 'ipaid'%}
+          <span class="regular-text" style="color: yellow; text-transform: uppercase;"
+            >Partialy paid</span
+          >
           {%else%}
           <span class="regular-text" style="color: green"
             >{{i.bill_paid_status|upper}}</span
@@ -56,8 +81,27 @@
         </div>
       </div>
     </div>
+
+    <div class="info-box" id="info-{{i.id}}">
+      <p class="fw-bold text-dark">{{i.owners_name}}</p>
+      
+    </div>
   </div>
+
+ 
 
   {%endfor%}
 </div>
+
+<script>
+  function showinfo(id){
+    console.log(id);
+    element = document.getElementById(id)
+    element.classList.add('show');
+  }
+  function hideinfo(id){
+    element = document.getElementById(id);
+    element.classList.remove('show');
+}
+</script>
 {% endblock %}

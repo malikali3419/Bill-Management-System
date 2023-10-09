@@ -88,6 +88,11 @@
 
 </div>
 <script>
+  if (document.querySelector('.messages')) {
+      setTimeout(function() {
+        window.location.href = "/home";
+      }, 2000); // 2000 milliseconds = 2 seconds
+    }
     var count = 0
     function showMore(event){
         if (count === 0){

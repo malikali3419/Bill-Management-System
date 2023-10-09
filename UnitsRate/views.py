@@ -12,10 +12,10 @@ class AddUnitCharges(View):
         residetail_unit_rates = ResidentialUnitRates.objects.all().first()
         fine_after_due_date = FineAfterDueDate.objects.all().first()
         m_charges_ = MiscellaneousCharges.objects.all().first()
-        first_range_of_unitValues = FirstRangeOfUnitValues.objects.all().first()
-        second_range_of_unit_values = SecondtRangeOfUnitValues.objects.all().first()
-        third_range_of_unit_values = ThirdRangeOfUnitValues.objects.all().first()
-        fourth_range_of_unit_values = FouthRangeOfUnitValues.objects.all().first()
+        first_range_of_unitValues = FirstRangeOfUnitValue.objects.all().first()
+        second_range_of_unit_values = SecondRangeOfUnitValue.objects.all().first()
+        third_range_of_unit_values = ThirdRangeOfUnitValue.objects.all().first()
+        fourth_range_of_unit_values = FouthRangeOfUnitValue.objects.all().first()
         fine_due_date = DueDateForFine.objects.all().first()
         fine_due_date = fine_due_date.fine_date
         formatted_fine_due_date = fine_due_date.strftime('%Y-%m-%d')
@@ -56,10 +56,10 @@ class AddUnitCharges(View):
         second_range_unit_charges_c =  Decimal(request.POST.get('second_range_unit_charges_c', None))
         third_range_unit_charges_c =  Decimal(request.POST.get('third_range_unit_charges_c', None))
         fourth_range_unit_charges_c = Decimal(request.POST.get('fourth_range_unit_charges_c'),None)
-        first_range_of_unitValues = FirstRangeOfUnitValues.objects.all()
-        second_range_of_unit_values = SecondtRangeOfUnitValues.objects.all()
-        third_range_of_unit_values = ThirdRangeOfUnitValues.objects.all()
-        fourth_range_of_unit_values = FouthRangeOfUnitValues.objects.all()
+        first_range_of_unitValues = FirstRangeOfUnitValue.objects.all()
+        second_range_of_unit_values = SecondRangeOfUnitValue.objects.all()
+        third_range_of_unit_values = ThirdRangeOfUnitValue.objects.all()
+        fourth_range_of_unit_values = FouthRangeOfUnitValue.objects.all()
         commercial_unit_rates = CommercialUnitRates.objects.all().first()
         residetail_unit_rates = ResidentialUnitRates.objects.all().first()
         fine_after_due_date = FineAfterDueDate.objects.all().first()
@@ -68,7 +68,7 @@ class AddUnitCharges(View):
         if request.user.is_superuser or request.user.role == 'Admin' or request.user.role == 'Manager':
             try:
                 if first_range_of_unitValues:
-                    first_input_range = FirstRangeOfUnitValues.objects.all().first()
+                    first_input_range = FirstRangeOfUnitValue.objects.all().first()
                     first_input_range.range_of_units_residential = first_range_input_r
                     first_input_range.unit_price_for_first_range_residentails =  first_range_unit_charges_r
                     first_input_range.range_of_units_commercial = first_range_input_c
@@ -76,7 +76,7 @@ class AddUnitCharges(View):
                     first_input_range.save()
                     
                 else:
-                    first_input_range = FirstRangeOfUnitValues(
+                    first_input_range = FirstRangeOfUnitValue(
                         range_of_units_residential= first_range_input_r,
                         unit_price_for_first_range_residentails=first_range_unit_charges_r,
                         range_of_units_commercial=first_range_input_c,
@@ -84,14 +84,14 @@ class AddUnitCharges(View):
                     )
                     first_input_range.save()
                 if second_range_of_unit_values:
-                    second_range_unit_values = SecondtRangeOfUnitValues.objects.all().first()
+                    second_range_unit_values = SecondRangeOfUnitValue.objects.all().first()
                     second_range_unit_values.range_of_units_residential = second_range_input_r
                     second_range_unit_values.unit_price_for_second_range_residentails = second_range_unit_charges_r
                     second_range_unit_values.range_of_units_commercial = second_range_input_c
                     second_range_unit_values.unit_price_for_second_range_wdcommercial = second_range_unit_charges_c
                     second_range_unit_values.save()
                 else:
-                    second_range_unit_values = SecondtRangeOfUnitValues(
+                    second_range_unit_values = SecondRangeOfUnitValue(
                         range_of_units_residential= second_range_input_r,
                         unit_price_for_second_range_residentails=second_range_unit_charges_r,
                         range_of_units_commercial=second_range_input_c,
@@ -99,14 +99,14 @@ class AddUnitCharges(View):
                     )
                     second_range_unit_values.save()
                 if third_range_of_unit_values:
-                    third_range_input_values = ThirdRangeOfUnitValues.objects.all().first()
+                    third_range_input_values = ThirdRangeOfUnitValue.objects.all().first()
                     third_range_input_values.range_of_units_residential = third_range_input_r
                     third_range_input_values.unit_price_for_third_range_residentails = third_range_unit_charges_r
                     third_range_input_values.range_of_units_commercial = third_range_input_c
                     third_range_input_values.unit_price_for_third_range_wdcommercial = third_range_unit_charges_c
                     third_range_input_values.save()
                 else:
-                    third_range_input_values = ThirdRangeOfUnitValues(
+                    third_range_input_values = ThirdRangeOfUnitValue(
                         range_of_units_residential= third_range_input_r,
                         unit_price_for_third_range_residentails=third_range_unit_charges_r,
                         range_of_units_commercial=third_range_input_c,
@@ -114,14 +114,14 @@ class AddUnitCharges(View):
                     )
                     third_range_input_values.save()
                 if fourth_range_of_unit_values:
-                    fourth_range_unit_values = FouthRangeOfUnitValues.objects.all().first()
+                    fourth_range_unit_values = FouthRangeOfUnitValue.objects.all().first()
                     fourth_range_unit_values.range_of_units_residential = fourth_range_input_r
                     fourth_range_unit_values.unit_price_for_fourht_range_residentails = fourth_range_unit_charges_r
                     fourth_range_unit_values.range_of_units_commercial = fourth_range_input_c
                     fourth_range_unit_values.unit_price_for_fourth_range_wdcommercial = fourth_range_unit_charges_c
                     fourth_range_unit_values.save()
                 else:
-                    fourth_range_unit_values = FouthRangeOfUnitValues(
+                    fourth_range_unit_values = FouthRangeOfUnitValue(
                         range_of_units_residential= fourth_range_input_r,
                         unit_price_for_fourht_range_residentails=fourth_range_unit_charges_r,
                         range_of_units_commercial=fourth_range_input_c,

@@ -2,7 +2,15 @@
 <!-- asdasd -->
 {%block content %}
 <div>
-     {% if not messages %}
+
+  {% if area.is_reading_noted %}
+  <div class="container-fluid text-center">
+
+  
+  <h1 class="text-danger">Reading Done</h1>
+</div>
+  {%else %}
+  {% if not messages %}
   <form class="my-form" id="my-form" enctype="multipart/form-data" method="POST">
     {%csrf_token %}
     <div class="container details">
@@ -69,6 +77,7 @@
     </div>
   </form>
   {%endif%}
+  {%endif%}
    {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -93,6 +102,11 @@
 
 </div>
 <script>
+  if (document.querySelector('.messages')) {
+      setTimeout(function() {
+        window.location.href = "/home";
+      }, 2000); // 2000 milliseconds = 2 seconds
+    }
     var count = 0
     function showMore(event){
         if (count === 0){

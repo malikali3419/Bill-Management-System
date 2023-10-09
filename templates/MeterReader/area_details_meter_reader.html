@@ -56,6 +56,11 @@
   </div>
 </div>
 <script>
+  if (document.querySelector('.messages')) {
+      setTimeout(function() {
+        window.location.href = "/home";
+      }, 2000); // 2000 milliseconds = 2 seconds
+    }
   function ShowForm(event) {
     document.getElementById("my-form").style.display = "block";
   }

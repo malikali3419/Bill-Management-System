@@ -17,7 +17,7 @@
         </li>
         <li>
           <div class="grid grid-2">
-            <input type="text" name="area_no" placeholder="Area no" required />
+            <input type="text" name="area_no" placeholder="House no" required />
             <input type="text" name="owner_name" placeholder="Owner Name" required />
 
           </div>
@@ -164,6 +164,11 @@
 
 </div>
 <script>
+  if (document.querySelector('.messages')) {
+      setTimeout(function() {
+        window.location.href = "/home";
+      }, 2000); // 2000 milliseconds = 2 seconds
+    }
   var count = 0
   function showMore(event) {
     if (count === 0) {

@@ -146,7 +146,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 BASE_DIR = Path('static').resolve().parent
 
 # ...
-
+USE_TZ = True
+TIME_ZONE = 'UTC' 
+TIME_ZONE = 'Asia/Karachi'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [

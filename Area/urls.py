@@ -11,6 +11,7 @@ urlpatterns = [
     path('area/<str:area_id>',ShowAreaDetails.as_view(), name='area_details'),
     path('Addhouse/',AddHouse.as_view(), name='Home'),
     path('logout/',Logout.as_view(), name='Home'),
+    path('reports/',GetAllReports.as_view(), name='allreports'),
     path('dump/', CreateDump.as_view(), name='dumpdata')
 ]
 if settings.DEBUG:

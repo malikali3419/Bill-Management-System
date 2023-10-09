@@ -133,7 +133,9 @@ class AddHouse(View):
 
 class ShowAreas(View):
     def get(self, request, *args, **kwargs):
-        block_name = kwargs.get('block_name', None) 
+        block_name = kwargs.get('block_name', None)
+        house_no =  request.GET.get('house_no')
+        owner_name = request.GET.get('owner_name')
         
         context={} 
         if block_name:
@@ -150,12 +152,22 @@ class ShowAreas(View):
                 areas = areas.filter(
                     area_type='commercial'
                 )
+            elif house_no:
+                areas = areas.filter(
+                    house_number__contains=house_no
+                )
+            elif owner_name:
+                areas = areas.filter(
+                    owners_name__contains=owner_name
+                )
             for area in areas:
                 bills = CalculatedBill.objects.filter(
                     meter__house__id=area.id
                 )
-                unpaid = any(bill.bill_status == 'Unpaid' for bill in bills)
-                status = 'unpaid' if unpaid else 'paid'
+                unpaid = any(bill.bill_status == 'unpaid' for bill in bills)
+                paid = any( bill.bill_status =='paid' for bill in bills)
+                ipaid = any(bill.bill_status == 'ipaid' for bill in bills)
+                status = 'unpaid' if unpaid else ('paid' if paid else 'ipaid')
                 area.bill_paid_status = status
                 area.save()
             context['areas'] = areas
@@ -193,6 +205,43 @@ class Logout(View):
             logout(request)
             return redirect ('/User/login')
     
+class GetAllReports(View):
+    def get(self, request, *args, **kwargs):
+        context = {}
+        areas = Area.objects.all();
+        all_houses = Area.objects.all().count()
+        all_meters = Meter.objects.all().count()
+        all_customers = Area.objects.all().count()
+        reading_done = 0
+        for house in areas:
+            print(house.is_reading_noted())
+            if house.is_reading_noted():
+                reading_done += 1
+
+        calculated_bills = CalculatedBill.objects.all()
+        total_units = 0
+        total_units_of_this_month = 0
+        total_bill_of_this_month = 0
+        total_amount_recieved = 0
+        total_amount_pending = 0
+        for bill in calculated_bills:
+            if bill.units_consumed:
+                total_units += int(bill.units_consumed) 
+                total_units_of_this_month += int(bill.total_unit_of_this_month())
+                total_bill_of_this_month += int(bill.total_bill_of_this_month())
+                total_amount_recieved += int(bill.total_bill_recieved())
+                total_amount_pending += int(bill.total_bill_pending())
+
+        context['all_houses'] = all_houses
+        context['total_bill_of_this_month'] = total_bill_of_this_month
+        context['total_amount_recieved'] = total_amount_recieved
+        context['total_amount_pending'] = total_amount_pending
+        context['total_units'] = total_units
+        context['total_units_of_this_month'] = total_units_of_this_month
+        context['all_meters'] = all_meters
+        context['all_customers'] = all_customers
+        context['reading_done'] = reading_done
+        return render(request, 'All_reports.html', context)
 
 
 class CreateDump(View):

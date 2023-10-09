@@ -35,12 +35,12 @@ class Area(models.Model):
         today = datetime.now(timezone.utc)
         twenty_days_ago = today - timedelta(days=20)
         print(self.id)
-        bill = CalculatedBill.objects.filter(meter__house__id=self.id).order_by('-created_at').last()
+        bill = CalculatedBill.objects.filter(meter__house__id=self.id).last()
         if bill:
             print(bill)
-            print(bill.updated_at)
+            bill.updated_at
             print(twenty_days_ago)
-            if bill.updated_at < twenty_days_ago:
+            if bill.created_at < twenty_days_ago:
                 return False
             else:
                 return True

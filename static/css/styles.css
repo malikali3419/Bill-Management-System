@@ -153,6 +153,9 @@ body {
          display: flex;
          animation: menu-slide-left 0.3s ease;
      }
+     .repo-cont{
+        padding: 0rem !important;
+     }
 
      @keyframes menu-slide-left {
          0% {
@@ -170,7 +173,7 @@ body {
      border-radius: 20px;
      background: #080808;
      padding: 5px;
-     overflow: hidden;
+    
      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 20px 0px;
      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 2px 2px 6px 10px rgba(255, 255, 255, 0.2);
@@ -1076,4 +1079,90 @@ label {
 
 .checkbox:active~.slider::before {
     transform: translate(0);
+}
+
+
+.reports-cont{
+    border-radius: 20px;
+}
+
+.reports-part{
+    flex: 1 1 auto;
+    margin: 0;
+    position: relative;
+    box-shadow: 0px 0px 8px 0px;
+    border-radius: 20px;
+    padding: 0rem 0.5rem;
+}
+.repost-logo{
+    margin-left: -1rem;
+    
+}
+.input__container--variant {
+    background: linear-gradient(to bottom, #F3FFF9, #F3FFF9);
+    border-radius: 30px;
+    max-width: 13em;
+    padding: 1em 1em;
+  }
+  
+  .shadow__input--variant {
+    filter: blur(25px);
+    border-radius: 30px;
+    background-color: #F3FFF9;
+    opacity: 0.5;
+  }
+  
+  .input__button__shadow--variant {
+    border-radius: 15px;
+    background-color: #000;
+    padding: 10px;
+    border: none;
+  }
+  
+  .input__button__shadow--variant:hover {
+    background-color: black;
+  }
+  
+  .input__search--variant {
+    width: 13em;
+    align-items: center;
+    border-radius: 13em;
+    outline: none;
+    border: none;
+    padding: 0.8em;
+    font-size: 1.2em;
+    color: #002019;
+    background-color: transparent;
+  }
+  
+  .input__search--variant::placeholder {
+    color: #002019;
+    opacity: 0.7;
+  }
+  
+  .input__container--variant {
+    background: linear-gradient(to bottom, #F3FFF9, #F3FFF9);
+    border-radius: 1.5em;
+    max-width: 16em;
+    padding: 1em;
+    box-shadow: 0em 1em 3em #ffffff64;
+  }
+  
+.info-box{
+    position: absolute;
+    display: none;
+    background: white;
+    padding: 0rem 3rem;
+    border: coral;
+    border-radius: 10px;
+    top: 87%;
+    left: 50%;
+    z-index: 1100;
+   background-color: white;
+    color: white !important;
+    text-align: center;
+}
+  
+.show{
+display: block;
 }
