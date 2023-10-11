@@ -61,3 +61,18 @@ Not Found: /favicon.ico
 Not Found: /favicon.ico
 Not Found: /favicon.ico
 Not Found: /favicon.ico
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Not Found: /home
+Not Found: /favicon.ico
+Not Found: /home
+Not Found: /home
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Invalid HTTP_HOST header: 'www.alwahabgarden.host'. You may need to add 'www.alwahabgarden.host' to ALLOWED_HOSTS.
+Bad Request: /
+Invalid HTTP_HOST header: 'www.alwahabgarden.host'. You may need to add 'www.alwahabgarden.host' to ALLOWED_HOSTS.
+Bad Request: /
+Not Found: /favicon.ico
+Not Found: /.env
