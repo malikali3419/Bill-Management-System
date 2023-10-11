@@ -1,0 +1,63 @@
+  File "/home/alwammwb/billmanagementsystem/passenger_wsgi.py", line 22
+    
+                                                ^
+SyntaxError: unexpected EOF while parsing
+  File "/home/alwammwb/billmanagementsystem/passenger_wsgi.py", line 22
+    
+                                                ^
+SyntaxError: unexpected EOF while parsing
+  File "/home/alwammwb/billmanagementsystem/passenger_wsgi.py", line 22
+    
+                                                ^
+SyntaxError: unexpected EOF while parsing
+  File "/home/alwammwb/billmanagementsystem/passenger_wsgi.py", line 22
+    
+                                                ^
+SyntaxError: unexpected EOF while parsing
+  File "/home/alwammwb/billmanagementsystem/passenger_wsgi.py", line 22
+    
+                                                ^
+SyntaxError: unexpected EOF while parsing
+Traceback (most recent call last):
+  File "/home/alwammwb/billmanagementsystem/passenger_wsgi.py", line 34, in <module>
+    application = PassengerPathInfoFix(application)
+TypeError: PassengerPathInfoFix() takes no arguments
+Traceback (most recent call last):
+  File "/home/alwammwb/billmanagementsystem/passenger_wsgi.py", line 34, in <module>
+    application = PassengerPathInfoFix(application)
+TypeError: PassengerPathInfoFix() takes no arguments
+Traceback (most recent call last):
+  File "/home/alwammwb/billmanagementsystem/passenger_wsgi.py", line 34, in <module>
+    application = PassengerPathInfoFix(application)
+TypeError: PassengerPathInfoFix() takes no arguments
+Traceback (most recent call last):
+  File "/home/alwammwb/billmanagementsystem/passenger_wsgi.py", line 34, in <module>
+    application = PassengerPathInfoFix(application)
+TypeError: PassengerPathInfoFix() takes no arguments
+Invalid HTTP_HOST header: 'alwahabgarden.host'. You may need to add 'alwahabgarden.host' to ALLOWED_HOSTS.
+Bad Request: /
+Invalid HTTP_HOST header: 'alwahabgarden.host'. You may need to add 'alwahabgarden.host' to ALLOWED_HOSTS.
+Bad Request: /favicon.ico
+Not Found: /
+Not Found: /favicon.ico
+Not Found: /static/css/styles.css
+Not Found: /static/css/logo.jpg
+Not Found: /static/css/styles.css
+Not Found: /static/css/logo.jpg
+Not Found: /static/css/styles.css
+Not Found: /static/css/logo.jpg
+Not Found: /favicon.ico
+Invalid HTTP_HOST header: 'www.alwahabgarden.host'. You may need to add 'www.alwahabgarden.host' to ALLOWED_HOSTS.
+Bad Request: /
+Invalid HTTP_HOST header: 'www.alwahabgarden.host'. You may need to add 'www.alwahabgarden.host' to ALLOWED_HOSTS.
+Bad Request: /favicon.ico
+Invalid HTTP_HOST header: 'www.alwahabgarden.host'. You may need to add 'www.alwahabgarden.host' to ALLOWED_HOSTS.
+Bad Request: /favicon.ico
+Invalid HTTP_HOST header: 'www.alwahabgarden.host'. You may need to add 'www.alwahabgarden.host' to ALLOWED_HOSTS.
+Bad Request: /
+Invalid HTTP_HOST header: 'www.alwahabgarden.host'. You may need to add 'www.alwahabgarden.host' to ALLOWED_HOSTS.
+Bad Request: /favicon.ico
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Not Found: /favicon.ico
