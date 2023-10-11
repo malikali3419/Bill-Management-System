@@ -18,16 +18,17 @@
     <form method="POST" id="login-form">
       {%csrf_token%}
       <div class="user-box">
-        <input class="user-box-input" type="email" name="email" required />
+        <input class="user-box-input" id="email" type="email" name="email" required />
         <label class="user-box-label">Email</label>
       </div>
       <div class="user-box">
-        <input class="user-box-input" type="password" name="password" required />
+        <input class="user-box-input" id="password" type="password" name="password" required />
         <label class="user-box-label">Password</label>
       </div>
+      <p style="color: red; display: none;" id="mesg"></p>
       {%if messages%} {% for message in messages%}
 
-      <p style="color: red">{{message}}</p>
+      <p style="color: red" id="mesg">{{message}}</p>
       {%endfor%} {%endif%}
       <a type="submit" style="cursor: pointer; border-radius: 5px;"
         onclick="document.getElementById('login-form').submit(); return false;" class="login-box-button" href="/">
@@ -39,6 +40,27 @@
       </a>
     </form>
   </div>
+  <script>
+    function isValidEmail(email) {
+    var regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return regex.test(email);
+}
+    document.addEventListener("keydown", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();  
+        email = document.getElementById('email').value
+        pass = document.getElementById("password").value
+        if (isValidEmail(email) && pass != null){
+          document.getElementById('login-form').submit();  // Submit the form
+        }
+        else{
+          document.getElementById('mesg').innerHTML = "Please Enter valid Email and password!"
+          document.getElementById('mesg').style.display = 'block'
+        }
+       
+    }
+});
+  </script>
 </body>
 
 </html>

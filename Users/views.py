@@ -16,7 +16,7 @@ User = get_user_model()
 class Login(View):
     def get(self,request,*args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('/home')
+            return redirect('/')
         return render(request, 'login.html')
     def post(self,request,*args, **kwargs):
         email = request.POST.get('email')
@@ -24,7 +24,7 @@ class Login(View):
         user = authenticate(request, email=email, password=password)
         if user:
             login(request, user)
-            return redirect('/home')
+            return redirect('/')
         else:
             messages.error(request, 'Username or passowrd is incorrect')
             return render(request,'login.html')

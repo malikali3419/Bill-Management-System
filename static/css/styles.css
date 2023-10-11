@@ -1,7 +1,7 @@
 
 html,
 body {
-    background-image: url('./background_logo.jpg') !important;
+    background-image: url('/static/css/background_logo.jpg') !important;
     background-repeat: no-repeat;
 
     background-size: cover;

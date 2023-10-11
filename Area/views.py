@@ -39,7 +39,7 @@ class Home(View):
                 block_name=block_name
             )
             block.save()
-        return redirect('/home')
+        return redirect('/')
     
 class AddHouse(View):
     def get(self,request,*args, **kwargs):

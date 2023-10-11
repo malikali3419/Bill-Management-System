@@ -23,7 +23,7 @@ from Area.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('User/',include('Users.urls')),
-    path('home/',include("Area.urls")),
+    path('',include("Area.urls")),
     path('charges/',include("UnitsRate.urls")),
     path('meters/',include("Bills.urls"))
 ]

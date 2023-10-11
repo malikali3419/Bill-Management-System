@@ -37,10 +37,10 @@
         <div class="nav-container">
           <ul class="nav-tabs">
             <li class="nav-tab">
-              <a class="text-decoration-none text-dark" href="/home/">Home</a>
+              <a class="text-decoration-none text-dark" href="/">Home</a>
             </li>
             <li class="nav-tab">
-              <a class="text-decoration-none text-dark" href="/home/Addhouse/">Add Plot</a>
+              <a class="text-decoration-none text-dark" href="/Addhouse/">Add Plot</a>
             </li>
             {% if request.user.role == 'Admin' or request.user.is_superuser %}
             <li class="nav-tab">
@@ -60,10 +60,10 @@
               <a class="text-decoration-none text-dark" href="/admin/">More</a>
             </li>
             <li class="nav-tab">
-              <a class="text-decoration-none text-dark" href="/home/reports/">Reports</a>
+              <a class="text-decoration-none text-dark" href="/reports/">Reports</a>
             </li>
             <li class="nav-tab">
-              <a class="text-decoration-none text-dark" href="/home/logout/">Logout</a>
+              <a class="text-decoration-none text-dark" href="/logout/">Logout</a>
             </li>
           </ul>
         </div>
@@ -79,7 +79,7 @@
     crossorigin="anonymous"></script>
   <script>
     function GetDump(event) {
-      fetch('http://127.0.0.1:8000/home/dump')
+      fetch("{%url 'dumpdata'%}")
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
