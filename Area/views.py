@@ -144,6 +144,7 @@ class ShowAreas(View):
             )
             residential = request.GET.get('residential', None)
             commercial = request.GET.get('commercial', None)
+            all = request.GET.get('all',None)
             if residential:
                 areas = areas.filter(
                     area_type='residential'

@@ -1,6 +1,6 @@
 {% extends "base_site.html" %} {% block title %} Admin | Home {% endblock %}
 {%block content %} {% load static %}
-<div class="p-5 d-flex justify-content-center align-items-center">
+<div class="p-5 d-flex search_filter justify-content-center align-items-center">
 
   <form class="input__container input__container--variant mx-5" method="GET">
     <div class="shadow__input shadow__input--variant"></div>
@@ -23,11 +23,19 @@
 </div>
 <div class="row cards-row">
   <form
-    class="row blocks d-flex justify-content-center align-items-center my-5"
+    class="row blocks d-flex justify-content-center align-items-center"
     method="GET"
     id="filter_form"
   >
-    <div class="col-lg-6 d-flex justify-content-center align-items-center mt-5">
+  <div class="col-lg-4 d-flex justify-content-center align-items-center mt-2" style="width: fit-content !important;">
+    <input class="d-none" type="text" name="all" id="all" />
+    <button class="btn"
+      onclick="document.getElementById('all').value='A'; document.getElementById('filter_form').submit(); return false;">
+      <span class="btn-text-one">All</span>
+      <span class="btn-text-two">Areas</span>
+    </button>
+  </div>
+    <div class="col-lg-4 d-flex justify-content-center align-items-center mt-2" style="width: fit-content !important;">
       <input type="text" class="d-none" name="residential" id="residential" />
       <button
         class="btn"
@@ -37,7 +45,7 @@
         <span class="btn-text-two">Area</span>
       </button>
     </div>
-    <div class="col-lg-6 d-flex justify-content-center align-items-center mt-5">
+    <div class="col-lg-4 d-flex justify-content-center align-items-center mt-2" style="width: fit-content !important;">
       <input class="d-none" type="text" name="commercial" id="commercial" />
       <button
         class="btn"
@@ -50,7 +58,7 @@
   </form>
   {%for i in areas%}
 
-  <div class="card col-lg-3 col-sm-12 col-md-6 mx-4 my-4" onmouseover="showinfo(`info-{{i.id}}`)" onmouseout="hideinfo(`info-{{i.id}}`)">
+  <div class="card col-lg-2 col-sm-5 col-md-4 mx-4 my-4" onmouseover="showinfo(`info-{{i.id}}`)" onmouseout="hideinfo(`info-{{i.id}}`)">
     <a href="{% url 'area_details' area_id=i.id %}">
       <div class="top-section d-flex justify-content-center align-items-center">
         <img src="{% static '/css/homepage.gif' %}" alt="" width="140px" />
@@ -87,10 +95,9 @@
       
     </div>
   </div>
-
- 
-
   {%endfor%}
+
+
 </div>
 
 <script>

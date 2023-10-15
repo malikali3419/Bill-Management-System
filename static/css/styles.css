@@ -6,7 +6,10 @@ body {
 
     background-size: cover;
     filter: blur(0.5);
+   
+
     background-attachment: fixed;
+    background-color: transparent;
 }
  h1 {
      margin: 20px 0;
@@ -60,10 +63,16 @@ body {
  .nav-tab:last-child {
      padding: 10px 0 0 25px;
  }
-
+.username2{
+    display: none;
+}
  .nav-tab,
  .menu-btn {
      cursor: pointer;
+     box-sizing: content-box;
+ }
+ .search_filter{
+    flex-direction: row;
  }
 
  .hidden {
@@ -78,21 +87,48 @@ body {
          z-index: -1;
          top: 0;
          right: 0;
-         width: 280px;
+         padding: 0rem 2rem;
+         width: max-content;
          height: 100%;
          background: #fff;
          box-shadow: -1px 0 2px rgba(0, 0, 0, 0.2);
      }
-
+     .search_filter{
+        flex-direction: column;
+     }
+     .search_filter form{
+        margin-top: 1rem !important;
+     }
+     html,
+     body{
+        background-image: url('/static/css/background_logo.jpg') !important;
+        background-repeat: no-repeat !important;
+    
+        background-size: cover !important;
+        filter: blur(0.5);
+       
+     
+        background-position: center !important;
+        
+    
+        background-attachment: fixed !important;
+        background-color: transparent !important;
+     }
+    
      .nav-tabs {
          flex-direction: column;
          align-items: flex-end;
          margin-top: 80px;
          width: 100%;
+         font-size: 14px;
+     }
+     .card{
+      width: 170px !important;
+      margin: 0.2rem 0.2rem !important;  
      }
 
      .nav-tab:not(:last-child) {
-         padding: 20px 25px;
+        
          margin: 0;
          border-right: unset;
          border-bottom: 1px solid #f5f5f5;
@@ -100,6 +136,12 @@ body {
 
      .nav-tab:last-child {
          padding: 15px 25px;
+     }
+     .username{
+        display: none;
+     }
+     .username2{
+        display: block;
      }
 
      .menu-btn {
@@ -156,7 +198,7 @@ body {
      .repo-cont{
         padding: 0rem !important;
      }
-
+ 
      @keyframes menu-slide-left {
          0% {
              transform: translateX(200px);
@@ -483,7 +525,7 @@ body {
 
 @media screen and (max-width: 400px) {
     .login-box {
-        width: 200px;
+        width: 250px;
     }
 
     .heading-login-box {
@@ -1166,3 +1208,96 @@ label {
 .show{
 display: block;
 }
+
+
+
+
+.dataTables thead th {
+    background-color: #0000;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Style the table rows */
+.dataTables tbody td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+/* Style the table rows on hover */
+.dataTables tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Style the pagination */
+.dataTables_paginate {
+    text-align: center;
+}
+
+/* Style the search input */
+.dataTables_filter input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* Style the pagination buttons */
+.dataTables_paginate .paginate_button {
+    background-color: #0000;
+    color: #fff;
+    border: 1px solid #0000;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+/* Style the active pagination button */
+.dataTables_paginate .paginate_button.current {
+    background-color: black;
+   
+    border: 1px solid #0000;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+/* Style the previous and next buttons */
+.dataTables_paginate .previous, .dataTables_paginate .next {
+   background-color: black;
+    color: black;
+    padding: 0.5rem;
+    cursor: pointer;
+    border: 1px solid #0000;
+    border-radius: 5px;
+    margin: 2px;
+}
+@media (max-width: 575.98px) {
+    .table-responsive-sm {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+    .table-responsive-sm>.table-bordered {
+        border: 0;
+    }
+
+    .text-wrap .table-responsive-sm>table {
+        border: 0;
+    }
+}
+
+/* Style the disabled pagination buttons */
+.dataTables_paginate .disabled {
+    background-color: #ccc;
+    color: #666;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+/* Style the table info */
+.dataTables_info {
+    font-weight: bold;
+}
+

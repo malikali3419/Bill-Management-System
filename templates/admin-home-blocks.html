@@ -1,6 +1,6 @@
 {% extends "base_site.html" %} {% block title %} Admin | Home {% endblock %}
 {%block content %} {% load static %}
-<div class="row p-5 text-center mt-5 d-flex justify-content-center align-items-center">
+<div class="row text-center mt-5 d-flex justify-content-center align-items-center">
   {% if not blocks %}
   <h1>No Blocks Added</h1>
   {%else%}
@@ -19,7 +19,7 @@
   <!-- end -->
   {%endfor%} {%endif%}
   <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12 blocks d-flex justify-content-center align-items-center mt-5 p-5">
-    <button title="Add" style="z-index: 1100;" class="cssbuttons-io-button" onclick="ShowForm(event)">
+    <button title="Add" style="z-index: 1;" class="cssbuttons-io-button" onclick="ShowForm(event)">
       <svg height="25" width="25" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 0h24v24H0z" fill="none"></path>
         <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" fill="currentColor"></path>

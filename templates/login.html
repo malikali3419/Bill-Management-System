@@ -8,21 +8,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" type="text/css" href="{% static '/css/styles.css' %}" />
   <link rel="icon" href="../static/css/logo_icon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Document</title>
 </head>
 
-<body class="login-page">
+<body class="login-page p-3">
   <div class="login-box" style="text-align: center">
     <img width="140px" style="border-radius: 10px" src="{% static 'css/logo.jpg'%}" alt="" />
     <h2 class="heading-login-box">Login</h2>
     <form method="POST" id="login-form">
       {%csrf_token%}
       <div class="user-box">
-        <input class="user-box-input" id="email" type="email" name="email" required />
+        <input class="user-box-input" id="email" type="email" autocomplete="off" name="email" required />
         <label class="user-box-label">Email</label>
       </div>
       <div class="user-box">
-        <input class="user-box-input" id="password" type="password" name="password" required />
+        <input class="user-box-input" id="password" autocomplete="off" type="password" name="password" required />
         <label class="user-box-label">Password</label>
       </div>
       <p style="color: red; display: none;" id="mesg"></p>

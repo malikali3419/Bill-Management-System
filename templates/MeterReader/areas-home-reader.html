@@ -1,8 +1,38 @@
 {% extends "MeterReader/base_site_reader.html" %} {% block title %} Meter Reader
 | Areas {% endblock %} {%block content %} {% load static %}
+
+<div class="p-5 d-flex search_filter justify-content-center align-items-center">
+
+  <form class="input__container input__container--variant mx-5" method="GET">
+    <div class="shadow__input shadow__input--variant"></div>
+    <input type="text" name="house_no" class="input__search input__search--variant" placeholder="Search by House no">
+    <button class="input__button__shadow input__button__shadow--variant">
+      <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" height="1.5em" width="13em">
+        <path d="M4 9a5 5 0 1110 0A5 5 0 014 9zm5-7a7 7 0 104.2 12.6.999.999 0 00.093.107l3 3a1 1 0 001.414-1.414l-3-3a.999.999 0 00-.107-.093A7 7 0 009 2z" fill-rule="evenodd" fill="#FFF"></path>
+      </svg>
+    </button>
+  </form>
+  <form class="input__container input__container--variant mx-5" method="GET">
+    <div class="shadow__input shadow__input--variant"></div>
+    <input type="text" name="owner_name" class="input__search input__search--variant" placeholder="Search by Owner name">
+    <button class="input__button__shadow input__button__shadow--variant">
+      <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" height="1.5em" width="13em">
+        <path d="M4 9a5 5 0 1110 0A5 5 0 014 9zm5-7a7 7 0 104.2 12.6.999.999 0 00.093.107l3 3a1 1 0 001.414-1.414l-3-3a.999.999 0 00-.107-.093A7 7 0 009 2z" fill-rule="evenodd" fill="#FFF"></path>
+      </svg>
+    </button>
+  </form>
+</div>
 <div class="row cards-row">
-  <form class="row blocks d-flex justify-content-center align-items-center my-5" method="GET" id="filter_form">
-    <div class="col-lg-6 d-flex justify-content-center align-items-center mt-5">
+  <form class="row blocks d-flex justify-content-center align-items-center" method="GET" id="filter_form">
+    <div class="col-lg-4 d-flex justify-content-center align-items-center mt-2" style="width: fit-content !important;">
+      <input class="d-none" type="text" name="all" id="all" />
+      <button class="btn"
+        onclick="document.getElementById('all').value='A'; document.getElementById('filter_form').submit(); return false;">
+        <span class="btn-text-one">All</span>
+        <span class="btn-text-two">Areas</span>
+      </button>
+    </div>
+    <div class="col-lg-4 d-flex justify-content-center align-items-center mt-2" style="width: fit-content !important;">
       <input type="text" class="d-none" name="residential" id="residential" />
       <button class="btn"
         onclick="document.getElementById('residential').value='R'; document.getElementById('filter_form').submit(); return false;">
@@ -10,7 +40,8 @@
         <span class="btn-text-two">Area</span>
       </button>
     </div>
-    <div class="col-lg-6 d-flex justify-content-center align-items-center mt-5">
+   
+    <div class="col-lg-4 d-flex justify-content-center align-items-center mt-2" style="width: fit-content !important;">
       <input class="d-none" type="text" name="commercial" id="commercial" />
       <button class="btn"
         onclick="document.getElementById('commercial').value='C'; document.getElementById('filter_form').submit(); return false;">
