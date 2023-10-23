@@ -3,13 +3,8 @@
 {%block content %}
 <div>
 
-  {% if area.is_reading_noted %}
-  <div class="container-fluid text-center">
+ 
 
-  
-  <h1 class="text-danger">Reading Done</h1>
-</div>
-  {%else %}
   {% if not messages %}
   <form class="my-form" id="my-form" enctype="multipart/form-data" method="POST">
     {%csrf_token %}
@@ -76,7 +71,7 @@
       </ul>
     </div>
   </form>
-  {%endif%}
+
   {%endif%}
    {% if messages %}
 <ul class="messages">
