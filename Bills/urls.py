@@ -9,7 +9,7 @@ urlpatterns = [
    
     path('<int:area_id>',ShowMeters.as_view(), name='meters'),
     path('details/<int:meter_id>',ShowMetersDetails.as_view(), name='meters_details'),
-    path('bill/<int:meter_id>',GetbBill.as_view(), name='get_bill'),
+    # path('bill/<int:meter_id>',GetbBill.as_view(), name='get_bill'),
     # path('bills/',GetAllBill.as_view(), name='get_all_bill')
 ]
 if settings.DEBUG:

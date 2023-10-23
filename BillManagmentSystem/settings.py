@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-f3p#9=maidwlcy)(d)l9b6azrsx5%9q(a@fl&k)_wfd=2n)c-#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['alwahabgarden.host']
 
 
 # Application definition
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'Users',
     "Bills",
     'Area',
-    'UnitsRate',
+    'UnitsRate'
 ]
 
 MIDDLEWARE = [
@@ -89,12 +89,12 @@ WSGI_APPLICATION = 'BillManagmentSystem.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bill_testing2',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'alwammwb_bill_management',
+        'USER': 'alwammwb_bill',
+        'PASSWORD': 'kp9jjfSJKKMuj7G',
         'HOST': 'localhost',  # or the hostname where PostgreSQL is running
-        'PORT': '5432',  # leave empty to use the default port (5432)
+        'PORT': '3306',  # leave empty to use the default port (5432)
     }
 }
 
@@ -133,8 +133,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -146,11 +146,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 BASE_DIR = Path('static').resolve().parent
 
 # ...
-USE_TZ = True
-TIME_ZONE = 'UTC' 
-TIME_ZONE = 'Asia/Karachi'
+
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+

@@ -26,6 +26,4 @@ urlpatterns = [
     path('',include("Area.urls")),
     path('charges/',include("UnitsRate.urls")),
     path('meters/',include("Bills.urls"))
-]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
