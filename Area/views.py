@@ -168,7 +168,13 @@ class ShowAreas(View):
                 unpaid = any(bill.bill_status == 'unpaid' for bill in bills)
                 paid = any( bill.bill_status =='paid' for bill in bills)
                 ipaid = any(bill.bill_status == 'ipaid' for bill in bills)
-                status = 'unpaid' if unpaid else ('paid' if paid else 'ipaid')
+                if unpaid:
+                    status = 'unpaid'
+                elif paid:
+                    status = 'paid'
+                elif ipaid:
+                    status = 'ipaid'
+                # status = 'unpaid' if unpaid else ('paid' if paid else 'ipaid')
                 area.bill_paid_status = status
                 area.save()
             context['areas'] = areas
