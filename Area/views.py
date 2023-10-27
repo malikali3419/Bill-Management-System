@@ -168,6 +168,7 @@ class ShowAreas(View):
                 unpaid = any(bill.bill_status == 'unpaid' for bill in bills)
                 paid = any( bill.bill_status =='paid' for bill in bills)
                 ipaid = any(bill.bill_status == 'ipaid' for bill in bills)
+                status = 'unpaid'
                 if unpaid:
                     status = 'unpaid'
                 elif paid:
