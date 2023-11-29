@@ -1,415 +1,173 @@
-<!DOCTYPE html>
-{% load static %}
 <html lang="en">
-
+{% load static %}
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Document</title>
+    <title>AI-WAHAB GARDEN HOUSING SCHEME</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .top_rw {
-            background-color: #f4f4f4;
-        }
         *{
-            font-size: 30px;
+        font-size: 12px ;
         }
-
-        button {
-            padding: 5px 10px;
-            font-size: 14px;
+        body {
+            font-family: 'Roboto', sans-serif;
         }
-
-        .invoice-box {
-            max-width: 890px;
-            margin: auto;
-            padding: 10px;
-            border: 1px solid #eee;
-            box-shadow: 0 0 10px rgba(0, 0, 0, .15);
-            font-size: 14px;
-            line-height: 24px;
-            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-            color: #555;
+        .table-bordered {
+            border-collapse: collapse;
         }
-
-        .invoice-box table {
-            width: 100%;
-            line-height: inherit;
-            text-align: left;
-            border-bottom: solid 1px #ccc;
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid black;
+            padding: 8px;
         }
-
-        .invoice-box table td {
-            padding: 5px;
-            vertical-align: middle;
+        .bg-yellow-200 {
+            background-color: #fefcbf;
         }
-
-        .invoice-box table tr td:nth-child(2) {
-            text-align: right;
+        .bg-blue-100 {
+            background-color: #ebf8ff;
         }
-
-        .invoice-box table tr.top table td {
-            padding-bottom: 20px;
+        .text-red-600 {
+            color: #dc2626;
         }
-
-        .invoice-box table tr.top table td.title {
-            font-size: 45px;
-            line-height: 45px;
-            color: #333;
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
         }
-
-        .invoice-box table tr.information table td {
-            padding-bottom: 40px;
+        .text-4xl {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
         }
-
-        .invoice-box table tr.heading td {
-            background: #eee;
-            border-bottom: 1px solid #ddd;
-            font-weight: bold;
-            font-size: 12px;
+        .font-bold {
+            font-weight: 700;
         }
-
-        .invoice-box table tr.details td {
-            padding-bottom: 20px;
-        }
-
-        .invoice-box table tr.item td {
-            border-bottom: 1px solid #eee;
-        }
-
-        .invoice-box table tr.item.last td {
+        .cut-line {
+            border-top: dashed 2px #000;
             border-bottom: none;
-        }
-
-        .invoice-box table tr.total td:nth-child(2) {
-            border-top: 2px solid #eee;
-            font-weight: bold;
-        }
-
-        @media only screen and (max-width: 600px) {
-            .invoice-box table tr.top table td {
-                width: 100%;
-                display: block;
-                text-align: center;
-            }
-
-            .invoice-box table tr.information table td {
-                width: 100%;
-                display: block;
-                text-align: center;
-            }
-        }
-
-        /** RTL **/
-        .rtl {
-            direction: rtl;
-            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-        }
-
-        .rtl table {
-            text-align: right;
-        }
-
-        .rtl table tr td:nth-child(2) {
-            text-align: left;
-        }
-
-
-
-        /* Style the watermark image */
-        .invoice-box::before {
-            content: "";
-            position: absolute;
-
-            opacity: 0.5;
-            /* Adjust the opacity as needed */
-            pointer-events: none;
-            /* Allows clicks to pass through the watermark */
         }
     </style>
 </head>
+<body class="bg-white">
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-4">
+            <img src="{% static 'css/logo.jpg'%}" alt="AI-WAHAB GARDEN HOUSING SCHEME logo" class="h-16">
+            <h1 class="text-3xl font-bold">AI-WAHAB GARDEN HOUSING SCHEME</h1>
+            <div class="text-right">
+                <p class="text-xl"> {{last_bill.created_at | date:"Y-m-d"}}</p>
+            </div>
+        </div>
 
-<body>
-    <div class="invoice-box">
-        <table cellpadding="0" cellspacing="0">
-            <tr class="top_rw">
-                <td colspan="2">
-                    <h2 style="margin-bottom: 0px; text-align: center;"> Al-Wahab Gardens/ Bill invoice </h2>
-
-                </td>
-            </tr>
-            <tr class="top">
-                <td colspan="3">
-                    <table>
-                        <tr style="display: flex; flex-direction: row; margin: 0; padding-bottom: 0px !important;">
-                            <td style="padding: 0px;width: 50%; display: flex;">
-
-                                <div class="data" style="width: 150px;">
-                                    <b>Owner Name</b>
-                                </div>
-                                <div class="data" style="width: 200px;">
-                                    {{area_details.owners_name}}
-                                </div>
-                            </td>
-                            <td style="padding: 0px; width: 50%; color: red; font-size: 20px;">
-                                <b>Due Date : {{due_date | date:"Y-m-d"}}</b>
-                            </td>
-                        </tr>
-                        <tr style="display: flex; flex-direction: column; margin: 0; padding-bottom: 0px !important;">
-                            <td colspan="1" style="padding: 0px; display: flex;">
-
-                                <div class="data" style="width: 150px;">
-                                    <b>House Number</b>
-                                </div>
-                                <div class="data" style="width: 200px;">
-                                    {{area_details.house_number}}
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr style="display: flex; flex-direction: column; margin: 0; padding-bottom: 0px !important;">
-                            <td colspan="1" style="padding: 0px; display: flex;">
-
-
-                                <div class="data" style="width: 150px;">
-                                    <b>Block</b>
-                                </div>
-                                <div class="data" style="width: 200px;">
-                                    {{area_details.area_block}}
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr style="display: flex; flex-direction: column; margin: 0; padding-bottom: 0px !important;">
-                            <td colspan="1" style="padding: 0px; display: flex;">
-
-                                <div class="data" style="width: 150px;">
-                                    <b>Bill Id</b>
-                                </div>
-                                <div class="data" style="width: 200px;">
-                                    {{meter.meter_id}}
-                                </div>
-
-                            </td>
-                        </tr>
-                        <tr style="display: flex; flex-direction: column; margin: 0; padding-bottom: 0px !important;">
-                            <td colspan="1" style="padding: 0px; display: flex;">
-                                <div class="data" style="width: 150px;">
-                                    <b>Owner's Name</b>
-                                </div>
-                                <div class="data" style="width: 200px;">
-                                    {{area_details.owners_phone_number}}
-                                </div>
-
-                            </td>
-                        </tr>
-
-                    </table>
-
-                </td>
-
-            </tr>
-
-
-            <td colspan="3" style="margin-top: 5rem;">
-                <table cellspacing="0px" cellpadding="2px" style="margin-top: 0rem;">
-                    <tr class="heading">
-                        <td style="width:15%;">
-                            Date
-                        </td>
-                        <td style="width:10%; text-align:center;">
-                            Units Consumed.
-                        </td>
-                        <td style="width:10%; text-align:center;">
-                            Meter Reading
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            Fine After Due Date
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            Miscellaneous Charges
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            TOTAL AMOUNT
-                        </td>
-                    </tr>
-                    <h3 style="padding: 0px; margin-bottom: 0px; margin-top: 2rem;">Bill Beofre Due Date</h3>
-                    <tr class="item" style="margin: 0px; padding: 0px;">
-                        <td style="width:15%;">
-                            {{last_bill.created_at | date:"Y-m-d"}}
-                        </td>
-                        <td style="width:10%; text-align:center;">
-                            {{last_bill.units_consumed}}
-                        </td>
-                        <td style="width:10%; text-align:center;">
-                            {{last_bill.bill_reading}}
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            0
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            {{m_charges.miscellaneous_charges}}
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            {{total_amount}}
-                        </td>
-                    </tr>
-                    <tr class="item">
-                        <td style="width:15%;"> <b> Grand Total </b> </td>
-                        <td style="width:10%; text-align:center;">
-                            {{last_bill.units_consumed}}
-                        </td>
-                        <td style="width:10%; text-align:center;">
-                            {{last_bill.bill_reading}}
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            0
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            {{m_charges.miscellaneous_charges}}
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            {{total_amount}}
-                        </td>
-                    </tr>
-                </table>
-                <table cellspacing="0px" cellpadding="2px" style="margin-top: 0rem;">
-                    <tr class="heading">
-                        <td style="width:15%;">
-                            Date
-                        </td>
-                        <td style="width:10%; text-align:center;">
-                            Units Consumed.
-                        </td>
-                        <td style="width:10%; text-align:right;">
-                            Reading
-                        </td>
-                        <td style="width:15%; text-align:right;">
-                            Fine After Due Date
-                        </td>
-                        <td style="width:15%; text-align:right;">
-                            Miscellaneous Charges
-                        </td>
-                        <td style="width:15%; text-align:right;">
-                            TOTAL AMOUNT
-                        </td>
-                    </tr>
-                    <h3 style="padding: 0px; margin-bottom: 0px; margin-top: 2rem; color: red;">Bill After Due Date</h3>
-                    <tr class="item" style="margin: 0px; padding: 0px;">
-                        <td style="width:15%;">
-                            {{last_bill.created_at | date:"Y-m-d"}}
-
-                        </td>
-                        <td style="width:10%; text-align:center;">
-                            {{last_bill.units_consumed}}
-                        </td>
-                        <td style="width:10%; text-align:center;">
-                            {{last_bill.bill_reading}}
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            {{fine}} %
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            {{m_charges.miscellaneous_charges}}
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            {{total_including_fine}}
-                        </td>
-                    </tr>
-                    <tr class="item">
-                        <td style="width:15%;"> <b> Grand Total </b> </td>
-                        <td style="width:10%; text-align:center;">
-                            {{last_bill.units_consumed}}
-                        </td>
-                        <td style="width:10%; text-align:center;">
-                            {{last_bill.bill_reading}}
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            {{fine}} %
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            {{m_charges.miscellaneous_charges}}
-                        </td>
-                        <td style="width:15%; text-align:center;">
-                            {{total_including_fine}}
-                        </td>
-                    </tr>
-                </table>
-                <div class="row">
-
-
-                    <table cellspacing="0px" class="col-lg-6" cellpadding="2px" style="margin-top: 0;">
-
-                        <tr class="heading">
-                            <td style="width:15%;">
-                                Date
-                            </td>
-                            <td style="width:10%; text-align:center;">
-                                Units Consumed.
-                            </td>
-                            <td style="width:10%; text-align:center;">
-                                Reading
-                            </td>
-
-                            <td style="width:15%; text-align:center;">
-                                Miscellaneous Charges
-                            </td>
-                            <td style="width:15%; text-align:center;">
-                                TOTAL AMOUNT
-                            </td>
-                        </tr>
-                        <h3 style="margin-top: 2rem;">History of Bills</h3>
-                        {% for item in history%}
-                        <tr class="item">
-                            <td style="width:15%;">
-                                {{item.created_at|date:"Y-m-d"}}
-                            </td>
-                            <td style="width:10%; text-align:center;">
-                                {{item.units_consumed}}
-                            </td>
-                            <td style="width:15%; text-align:center;">
-                                {{item.bill_reading}}
-                            </td>
-                            <td style="width:15%; text-align:center;">
-                                {{m_charges.miscellaneous_charges}}
-                            </td>
-
-                            <td style="width:15%; text-align:center;">
-                                {{item.bill_total_amount}}
-                            </td>
-                        </tr>
-                        {%endfor%}
-                    </table>
-                    <table cellspacing="0px" cellpadding="2px" style="margin-top: 0;">
-                        <tr class="item" style="text-align: right;">
-                            <td style="padding: 2rem;">
-                                <img src="../media/{{last_bill.bill_reading_img}}" width="440px" height="300px" alt="">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </td>
-
-
-        </table>
-        <tr class="total">
-            <td align="right">
-                <p style="font-size: 20px;">Total Amount : <b>
-                        {{total_amount}}
-                    </b></p>
-            </td>
-            <td align="right">
-                <p style="font-size: 20px;">Total Amount in Words: <b>
-                        {{amount_in_words}}
-                    </b></p>
-            </td>
-        </tr>
-
+        <table class="table-bordered w-full mb-4">
+            <tbody>
+                <!-- Customer Information -->
+                <tr>
+                    <td colspan="2"><strong>BILL NO:</strong> 123</td>
+                    <td><strong>READING DATE:</strong> {{last_bill.created_at | date:"d M y" | upper }}</td>
+                    <td><strong>BILL DATE:</strong>  {{last_bill.created_at | date:"d M y" | upper }}</td>
+                    <td colspan="2"><strong>CUSTOMER NAME:</strong>  {{area_details.owners_name}}</td>
+                    <td><strong>CUSTOMER PHONE:</strong> {{area_details.owners_phone_number}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>HOUSE NO:</strong>  {{area_details.house_number}}</td>
+                    <td><strong>BLOCK:</strong>{{area_details.area_block}}</td>
+                    <td><strong>NO OF AC:</strong> None</td>
+                    <td colspan="2"><strong>CUSTOMER ADDRESS:</strong>{{area_details.house_number}}, {{area_details.area_block}} </td>
+                    <td><strong>METER NO:</strong> {{meter.meter_id}}</td>
+                </tr>
+                <!-- Reading Status -->
+                <tr class="bg-yellow-200">
+                    <td colspan="3">PREVIOUS READING</td>
+                    <td colspan="2">PRESENT READING</td>
+                    <td>MF</td>
+                    <td>STATUS</td>
+                </tr>
+                <tr class="bg-yellow-200">
+                    <td colspan="3">{{lastitem.bill_reading}}</td>
+                    <td colspan="2">{{last_bill.bill_reading}}</td>
+                    <td>-</td>
+                    <td class="text-red-600 font-bold">{{last_bill.bill_status}}</td>
+                </tr>
+                <!-- Scheme Charges -->
+                <tr>
+                    <td colspan="3"><strong>Scheme CHARGES</strong></td>
+                    <td colspan="2">UNITS CONSUMED</td>
+                    <td colspan="2">{{last_bill.units_consumed}}</td>
+                </tr>
+                
+                <!-- Total Charges -->
+                <tr>
+                    <td colspan="3" rowspan="2"><strong>TOTAL CHARGES</strong></td>
+                    <td colspan="2">CURRENT BILL</td>
+                    <td colspan="2">{{total_amount}}</td>
+                </tr>
+                <tr class="bg-yellow-200">
+                    <td colspan="2">TOTAL</td>
+                    <td colspan="2">{{total_amount}}</td>
+                </tr>
+                <!-- Payment Information -->
+                <tr>
+                    <td colspan="3" rowspan="2"><strong>PAYABLE WITHIN DUE DATE</strong></td>
+                    <td colspan="2">PAYABLE WITHIN DUE DATE</td>
+                    <td colspan="2">{{total_amount}}</td>
+                </tr>
+                <tr class="bg-yellow-200">
+                    <td colspan="2">Miscellaneous Charges</td>
+                    <td colspan="2"> {{m_charges.miscellaneous_charges}}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" rowspan="2" class="text-red-500"><strong>PAYABLE AFTER DUE DATE</strong></td>
+                    <td colspan="2" class="text-red-500">PAYABLE AFTER DUE DATE</td>
+                    <td colspan="2">{{total_including_fine}}</td>
+                </tr>
+                <tr class="bg-yellow-200">
+                    <td colspan="2">-</td>
+                    <td colspan="2">-</td>
+                </tr>
+                <!-- Reading History -->
+                <tr class="bg-blue-100">
+                    <td colspan="7" class="font-bold">READING HISTORY</td>
+                </tr>
+               
+                <tr class="bg-blue-100">
+                    <td>DATE</td>
+                    <td>UNITS</td>
+                    <td>CHARGES</td>
+                    <td>STATUS</td>
+                    <td colspan="3">NOTES</td>
+                </tr>
+              
+                {% for item in history%}
+                <tr>
+                    <td>{{item.created_at | date:"M y" | upper }}</td>
+                    <td>{{item.units_consumed}}</td>
+                    <td>{{item.bill_total_amount}}</td>
+                    <td>{{item.bill_status}}</td>
+                    <td colspan="3">-</td>
+                </tr>
+                {%endfor%}
+                
+                <tr>
+                    <td colspan="7" class="py-4">
+                        <img src="../media/{{last_bill.bill_reading_img}}" width="300px" alt="Meter reading image" class="meter-image">
+                    </td>
+                </tr>
+                <tr> 
+                    <td colspan="7" class="text-center py-4 cut-line">
+                        <p>------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
+                        <p class="font-bold text-2xl">AI-WAHAB GARDEN HOUSING SCHEME</p>
+                        <p>CUT HERE</p>
+                    </td>
+                </tr>
+                <!-- Footer Information -->
+                <tr>
+                    <td>BILL NO: 123</td>
+                    <td>DUE DATE: 2023-11-02</td>
+                    <td>REFERENCE NO: 456</td>
+                    <td colspan="2" class="text-red-500"><strong>CONSUMER BILL DUE DATE:</strong> {{due_date | date:"d M y" | upper }}</td>
+                    <td colspan="2" class="text-red-500"><strong>PAYABLE AFTER DUE DATE:</strong> 56850</td>
+                </tr>
+            </tbody>
         </table>
     </div>
-
 </body>
-
 </html>

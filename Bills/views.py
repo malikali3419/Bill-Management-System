@@ -222,7 +222,6 @@ class GetbBill(View):
                 current_date_str = str(current_date)
                 current_date = datetime.strptime(current_date_str, '%Y-%m-%d')
                 current_date_aware = current_date.replace(tzinfo=provided_datetime.tzinfo)
-                
                 fine_due_date += float(bill.bill_total_amount) * (float(FineAfterDueDate.objects.all().first().fine_after_due_date/100))
             context['meter'] = meter
             total_amount_bills = last_bill.bill_total_amount
@@ -242,100 +241,4 @@ class GetbBill(View):
         context['total_amount'] = int(total_amount_bills)
         context['amount_in_words'] = number_to_words(int(total_amount_bills))
         context['area_details'] = area
-        return render(request, 'bill.html', context)
-
-
-
-
-
-# class GetAllBill(View):
-    
-#     def get(self,request,*args, **kwargs):
-#         meters = Meter.objects.all()
-#         print(meters)
-#         pdfs = [] 
-#         pdf_buffer = BytesIO()
-
-#         # Initialize PDF document with BytesIO buffer
-#         pdf = pisa.pisaDocument(pdf_buffer)
-
-#         for meter in meters:
-#             area = Area.objects.filter(
-#                 id=meter.house.id
-#             ).first()
-#             print(area)
-#             bills = CalculatedBill.objects.filter(
-#                 meter__id=meter.id,
-#                 bill_status='unpaid'
-#             )
-#             bill_history  = CalculatedBill.objects.filter(
-#                 meter__id=meter.id,
-#             )[:6]
-#             print(bill_history)
-#             last_bill = CalculatedBill.objects.filter(
-#                 meter__id=meter.id,
-#                 bill_status='unpaid'
-#             ).last()
-#             context = {}
-#             fine_due_date = 0
-        
-            
-#             if last_bill:  
-#                 provided_date = str(last_bill.created_at)
-#                 current_date = datetime.now().date()
-#                 provided_datetime = datetime.strptime(provided_date, "%Y-%m-%d %H:%M:%S.%f%z")
-#                 date_after_10_days = provided_datetime + timedelta(days=10)
-#                 for bill in bills:
-#                     provided_date = str(bill.created_at)
-#                     current_date = datetime.now().date()
-#                     provided_datetime = datetime.strptime(provided_date, "%Y-%m-%d %H:%M:%S.%f%z")
-#                     date_after_10_days = provided_datetime + timedelta(days=10)
-#                     current_date_str = str(current_date)
-#                     current_date = datetime.strptime(current_date_str, '%Y-%m-%d')
-#                     current_date_aware = current_date.replace(tzinfo=provided_datetime.tzinfo)
-                    
-#                     fine_due_date += float(bill.bill_total_amount) * (float(FineAfterDueDate.objects.all().first().fine_after_due_date/100))
-#                 context['meter'] = meter
-#                 total_amount_bills = last_bill.bill_total_amount
-#             context['history'] = bill_history
-#             def number_to_words(number):
-#                 p = inflect.engine()
-#                 return p.number_to_words(number)
-#             m_charges = MiscellaneousCharges.objects.all().first()
-#             last_item_index = len(bill_history) - 2
-#             last_item = bill_history[last_item_index] if last_item_index >= 0 else None 
-#             context['lastitem'] = last_item
-#             context['last_bill'] = last_bill
-#             context['total_including_fine'] = float(total_amount_bills) + fine_due_date
-#             context['fine'] = float(FineAfterDueDate.objects.all().first().fine_after_due_date)
-#             context['m_charges'] = m_charges
-#             context['due_date'] = date_after_10_days
-#             context['total_amount'] = int(total_amount_bills)
-#             context['amount_in_words'] = number_to_words(int(total_amount_bills))
-#             context['area_details'] = area
-#             response = HttpResponse(content_type='application/pdf')
-#             response['Content-Disposition'] = 'attachment; filename="example.pdf"'
-#             # Generate the HTML content (replace 'your_template.html' with your template file)
-#             template = get_template('bill.html')
-#             context = context  # Add any context data you need for your template
-#             html = template.render(context)
-#             pdf_document = BytesIO(html.encode('utf-8'))
-#             pisa.pisaDocument(pdf_document, pdf_buffer)
-#             # Create a PDF object and write the HTML content into it
-#             pdf = pisa.CreatePDF(html, dest=response)
-#         response = HttpResponse(pdf_buffer.getvalue(), content_type='application/pdf')
-#         response['Content-Disposition'] = 'attachment; filename="merged_pdfs.pdf"'
-#         pdf_buffer.close()
-#         return response
-#     def link_callback(self, uri, rel):
-#         if uri.startswith('file://'):
-#             return uri
-#         return None
-        
-
-
-
-
-
-
-
+        return render(request, 'index.html', context)
