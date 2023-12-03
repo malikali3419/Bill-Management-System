@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         *{
-        font-size: 12px ;
+        font-size: 10px ;
         }
         body {
             font-family: 'Roboto', sans-serif;
@@ -19,7 +19,7 @@
         .table-bordered th,
         .table-bordered td {
             border: 1px solid black;
-            padding: 8px;
+            padding: 5px;
         }
         .bg-yellow-200 {
             background-color: #fefcbf;
@@ -53,7 +53,7 @@
             <img src="{% static 'css/logo.jpg'%}" alt="AI-WAHAB GARDEN HOUSING SCHEME logo" class="h-16">
             <h1 class="text-3xl font-bold">AI-WAHAB GARDEN HOUSING SCHEME</h1>
             <div class="text-right">
-                <p class="text-xl"> {{last_bill.created_at | date:"Y-m-d"}}</p>
+                <p class="text-xl"></p>
             </div>
         </div>
 
@@ -61,58 +61,63 @@
             <tbody>
                 <!-- Customer Information -->
                 <tr>
-                    <td colspan="2"><strong>BILL NO:</strong> 123</td>
+                    <td colspan="2"><strong>BILL NO:</strong> {{last_bill.id}}</td>
                     <td><strong>READING DATE:</strong> {{last_bill.created_at | date:"d M y" | upper }}</td>
-                    <td><strong>BILL DATE:</strong>  {{last_bill.created_at | date:"d M y" | upper }}</td>
+                    <td><strong>BILL DATE:</strong>  {{current_date | date:"d M y" | upper}}</td>
                     <td colspan="2"><strong>CUSTOMER NAME:</strong>  {{area_details.owners_name}}</td>
                     <td><strong>CUSTOMER PHONE:</strong> {{area_details.owners_phone_number}}</td>
                 </tr>
                 <tr>
                     <td colspan="2"><strong>HOUSE NO:</strong>  {{area_details.house_number}}</td>
                     <td><strong>BLOCK:</strong>{{area_details.area_block}}</td>
-                    <td><strong>NO OF AC:</strong> None</td>
-                    <td colspan="2"><strong>CUSTOMER ADDRESS:</strong>{{area_details.house_number}}, {{area_details.area_block}} </td>
+                  
                     <td><strong>METER NO:</strong> {{meter.meter_id}}</td>
+                    <td colspan="3"><strong>CUSTOMER ADDRESS:</strong>{{area_details.house_number}} / {{area_details.area_block}} </td>
                 </tr>
                 <!-- Reading Status -->
                 <tr class="bg-yellow-200">
-                    <td colspan="3">PREVIOUS READING</td>
-                    <td colspan="2">PRESENT READING</td>
-                    <td>MF</td>
-                    <td>STATUS</td>
+                    <td colspan="3"><strong>PREVIOUS READING</strong></td>
+                    <td colspan="2"><strong>PRESENT READING</strong></td>
+                    <td><strong>Miscellaneous Charges</strong></td>
+                    <td><strong>STATUS</strong></td>
                 </tr>
                 <tr class="bg-yellow-200">
                     <td colspan="3">{{lastitem.bill_reading}}</td>
                     <td colspan="2">{{last_bill.bill_reading}}</td>
-                    <td>-</td>
+                    <td>{{m_charges.miscellaneous_charges}}</td>
                     <td class="text-red-600 font-bold">{{last_bill.bill_status}}</td>
                 </tr>
                 <!-- Scheme Charges -->
                 <tr>
-                    <td colspan="3"><strong>Scheme CHARGES</strong></td>
+                    <td colspan="3"><strong>UNITS</strong></td>
                     <td colspan="2">UNITS CONSUMED</td>
                     <td colspan="2">{{last_bill.units_consumed}}</td>
                 </tr>
                 
                 <!-- Total Charges -->
                 <tr>
-                    <td colspan="3" rowspan="2"><strong>TOTAL CHARGES</strong></td>
-                    <td colspan="2">CURRENT BILL</td>
-                    <td colspan="2">{{total_amount}}</td>
+                    <td colspan="3" rowspan="2"><strong>BILLING SUMMARY</strong></td>
+                    <td colspan="2">PRESENT BILL AMOUNT</td>
+                    <td colspan="2"> {{total_bill_without_MSC}}</td>
                 </tr>
                 <tr class="bg-yellow-200">
-                    <td colspan="2">TOTAL</td>
-                    <td colspan="2">{{total_amount}}</td>
+                    
+                    <td colspan="2">PREVIOUS BILL REMAINING DUES</td>
+                    <td colspan="2">{{lastitem.remaing_dues}}</td>
+                   
                 </tr>
                 <!-- Payment Information -->
                 <tr>
-                    <td colspan="3" rowspan="2"><strong>PAYABLE WITHIN DUE DATE</strong></td>
-                    <td colspan="2">PAYABLE WITHIN DUE DATE</td>
-                    <td colspan="2">{{total_amount}}</td>
+                    <td colspan="3" rowspan="2"><strong>TOTAL CHARGES</strong></td>
+
+                    <td colspan="2">Miscellaneous Charges</td>
+                    <td colspan="2">{{m_charges.miscellaneous_charges}}</td>
+                  
+                    
                 </tr>
                 <tr class="bg-yellow-200">
-                    <td colspan="2">Miscellaneous Charges</td>
-                    <td colspan="2"> {{m_charges.miscellaneous_charges}}</td>
+                    <td colspan="2"><strong>TOTAL</strong></td>
+                    <td colspan="2"><strong>{{total_amount}}</strong></td>
                 </tr>
                 <tr>
                     <td colspan="3" rowspan="2" class="text-red-500"><strong>PAYABLE AFTER DUE DATE</strong></td>
@@ -132,8 +137,8 @@
                     <td>DATE</td>
                     <td>UNITS</td>
                     <td>CHARGES</td>
+                    <td colspan="3">PAYMENT RECIEVED</td>
                     <td>STATUS</td>
-                    <td colspan="3">NOTES</td>
                 </tr>
               
                 {% for item in history%}
@@ -141,30 +146,32 @@
                     <td>{{item.created_at | date:"M y" | upper }}</td>
                     <td>{{item.units_consumed}}</td>
                     <td>{{item.bill_total_amount}}</td>
+                    <td colspan="3">{{item.payment_recieved}}</td>
                     <td>{{item.bill_status}}</td>
-                    <td colspan="3">-</td>
+                   
                 </tr>
                 {%endfor%}
                 
                 <tr>
                     <td colspan="7" class="py-4">
-                        <img src="../media/{{last_bill.bill_reading_img}}" width="300px" height="400px" alt="Meter reading image" class="meter-image">
+                        <img src="../media/{{last_bill.bill_reading_img}}" width="300px" height="178px" style="width: 300px !important; height: 178px !important;" alt="Meter reading image" class="meter-image">
                     </td>
                 </tr>
                 <tr> 
                     <td colspan="7" class="text-center py-4 cut-line">
-                        <p>------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
+                        <p>----------------------------------------------------------------------------------------------------------CUT HERE-------------------------------------------------------------------------------------------------------------------------------</p>
                         <p class="font-bold text-2xl">AI-WAHAB GARDEN HOUSING SCHEME</p>
-                        <p>CUT HERE</p>
+                      
                     </td>
                 </tr>
                 <!-- Footer Information -->
                 <tr>
-                    <td>BILL NO: 123</td>
-                    <td>DUE DATE: 2023-11-02</td>
-                    <td>REFERENCE NO: 456</td>
-                    <td colspan="2" class="text-red-500"><strong>CONSUMER BILL DUE DATE:</strong> {{due_date | date:"d M y" | upper }}</td>
-                    <td colspan="2" class="text-red-500"><strong>PAYABLE AFTER DUE DATE:</strong> 56850</td>
+                    <td>BILL NO: {{last_bill.id}}</td>
+                    <td><strong>DUE DATE:</strong> {{due_date | date:"d M y" | upper }}</td>
+                    <td>CUSTOMER NAME: {{area_details.owners_name}}</td>
+                    <td>HOUSE NO: {{area_details.house_number}} / {{area_details.area_block}}</td>
+                    <td colspan="2" class=""><strong>PAYABLE BEFORE DUE DATE:</strong> {{total_amount}}</td>
+                    <td colspan="2" class="text-red-500"><strong>PAYABLE AFTER DUE DATE:</strong> {{total_including_fine}}</td>
                 </tr>
             </tbody>
         </table>

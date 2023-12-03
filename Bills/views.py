@@ -222,6 +222,7 @@ class GetbBill(View):
                 current_date_str = str(current_date)
                 current_date = datetime.strptime(current_date_str, '%Y-%m-%d')
                 current_date_aware = current_date.replace(tzinfo=provided_datetime.tzinfo)
+                context['current_date'] = current_date
                 fine_due_date += float(bill.bill_total_amount) * (float(FineAfterDueDate.objects.all().first().fine_after_due_date/100))
             context['meter'] = meter
             total_amount_bills = last_bill.bill_total_amount
@@ -238,6 +239,8 @@ class GetbBill(View):
         context['fine'] = float(FineAfterDueDate.objects.all().first().fine_after_due_date)
         context['m_charges'] = m_charges
         context['due_date'] = date_after_10_days
+        
+        context['total_bill_without_MSC'] = int(total_amount_bills) - float(MiscellaneousCharges.objects.all().first().miscellaneous_charges)
         context['total_amount'] = int(total_amount_bills)
         context['amount_in_words'] = number_to_words(int(total_amount_bills))
         context['area_details'] = area

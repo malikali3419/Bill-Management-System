@@ -10,7 +10,7 @@ urlpatterns = [
     path('blocks/<str:block_name>',ShowAreas.as_view(), name='blocks_areas'),
     path('area/<str:area_id>',ShowAreaDetails.as_view(), name='area_details'),
     path('Addhouse/',AddHouse.as_view(), name='Home'),
-    path('logout/',Logout.as_view(), name='Home'),
+    path('logout/',Logout.as_view(), name='logout'),
     path('reports/',GetAllReports.as_view(), name='allreports'),
     path('dump/', CreateDump.as_view(), name='dumpdata')
 ]
