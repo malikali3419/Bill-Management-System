@@ -106,11 +106,10 @@
           // Create an anchor element to trigger the download
           const a = document.createElement('a');
           a.href = url;
-          a.download = 'db.json'; // Set the desired file name
-
-          // Trigger the click event to initiate the download
+          a.download = 'db.sqlite3';
           a.click();
-
+          a.download = 'db3.json'
+          a.click();
           // Clean up by revoking the blob URL
           window.URL.revokeObjectURL(url);
         })

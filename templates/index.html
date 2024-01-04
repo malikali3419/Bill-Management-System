@@ -50,7 +50,7 @@
 <body class="bg-white">
     <div class="container mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-4">
-            <img src="{% static 'css/logo.jpg'%}" alt="AI-WAHAB GARDEN HOUSING SCHEME logo" class="h-16">
+            <img src="{% static 'css/logo.jpg'%}" style="height: 13rem;" alt="AI-WAHAB GARDEN HOUSING SCHEME logo" >
             <h1 class="text-3xl font-bold">AI-WAHAB GARDEN HOUSING SCHEME</h1>
             <div class="text-right">
                 <p class="text-xl"></p>
@@ -147,14 +147,21 @@
                     <td>{{item.units_consumed}}</td>
                     <td>{{item.bill_total_amount}}</td>
                     <td colspan="3">{{item.payment_recieved}}</td>
-                    <td>{{item.bill_status}}</td>
+                    {%if item.bill_status == 'ipaid'%}
+                        <td>Initial paid</td>
+                        {%else%}
+                        <td>{{item.bill_status}}</td>
+                    {%endif%}
                    
                 </tr>
                 {%endfor%}
                 
                 <tr>
-                    <td colspan="7" class="py-4">
+                    <td colspan="4" class="py-4">
                         <img src="../media/{{last_bill.bill_reading_img}}" width="300px" height="178px" style="width: 300px !important; height: 178px !important;" alt="Meter reading image" class="meter-image">
+                    </td>
+                    <td colspan="4" class="py-4">
+                        <img src="{% static 'css/note.jpeg'%}" width="300px" height="178px" style="width: 300px !important; height: 178px !important;" alt="Meter reading image" class="meter-image">
                     </td>
                 </tr>
                 <tr> 

@@ -152,7 +152,6 @@ class ShowMetersDetails(View):
             recieved_amount = float(request.POST.get('r_amount', None))
             remaining_dues = total_amount - recieved_amount
             print(remaining_dues)
-            print(total_amount, recieved_amount)
             bills = list(CalculatedBill.objects.filter(
                 meter__id=meter_id,
                 bill_status='unpaid'
@@ -164,16 +163,19 @@ class ShowMetersDetails(View):
                     for bill in bills:
                         bill.bill_status = 'paid'
                         bill.remaing_dues = 0
+                        bill.payment_recieved = recieved_amount
                         bill.save()
                         bills.pop(-1)
                 elif remaining_dues > 0:
                     bills[-1].remaing_dues = remaining_dues
                     bills[-1].bill_status = 'ipaid'
+                    bills[-1].payment_recieved = recieved_amount
                     bills[-1].save()
                 if len(bills) > 1:
                     for bill in bills[:-1]:
                         bill.bill_status = 'paid'
                         bill.remaing_dues = 0
+                        bill.payment_recieved = recieved_amount
                         bill.save()
                 messages.success(request, "Success")    
             except Exception as e:

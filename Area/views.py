@@ -254,11 +254,21 @@ class GetAllReports(View):
 
 class CreateDump(View):
     def get(self, request, *args, **kwargs):
-        file_path = os.path.join(settings.BASE_DIR, 'db.json')
-        with open(file_path, 'w') as f:
-            subprocess.run(['python', 'manage.py', 'dumpdata'], stdout=f)
-        with open(file_path, 'rb') as f:
-            file_data = f.read()
-        response = HttpResponse(file_data, content_type='application/json')
-        response['Content-Disposition'] = 'attachment; filename="db.json"'
-        return response
+        file_path = os.path.join(settings.BASE_DIR, 'db3.json')
+
+        try:
+            # Run the dumpdata command and redirect the output to the specified file
+            subprocess.run(['python', 'manage.py', 'dumpdata'], stdout=open(file_path, 'w'))
+
+            # Read the content of the created file
+            with open(file_path, 'rb') as f:
+                file_data = f.read()
+
+            # Create an HTTP response with the file content
+            response = HttpResponse(file_data, content_type='application/json')
+            response['Content-Disposition'] = 'attachment; filename="db3.json"'
+            return response
+
+        except Exception as e:
+            # Handle any exceptions that might occur during the command execution
+            return HttpResponse(f"An error occurred: {str(e)}", status=500)

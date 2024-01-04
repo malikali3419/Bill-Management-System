@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-f3p#9=maidwlcy)(d)l9b6azrsx5%9q(a@fl&k)_wfd=2n)c-#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['alwahabgarden.host']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -80,23 +80,23 @@ WSGI_APPLICATION = 'BillManagmentSystem.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'alwammwb_bill_management',
-        'USER': 'alwammwb_bill',
-        'PASSWORD': 'kp9jjfSJKKMuj7G',
-        'HOST': 'localhost',  # or the hostname where PostgreSQL is running
-        'PORT': '3306',  # leave empty to use the default port (5432)
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'alwammwb_bill_management',
+#         'USER': 'alwammwb_bill',
+#         'PASSWORD': 'kp9jjfSJKKMuj7G',
+#         'HOST': 'localhost',  # or the hostname where PostgreSQL is running
+#         'PORT': '3306',  # leave empty to use the default port (5432)
+#     }
+# }
 
 
 # Password validation
@@ -134,7 +134,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
